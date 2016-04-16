@@ -5,7 +5,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       data: {},
-      courses: [['ARAB', '202', '01'], ['MATH', '414', '01']]
+      courses: [['CSCI', '303', '01'], ['MATH', '451', '01'], ['CSCI', '420', '01']]
     };
     this.addCourse = this.addCourse.bind(this);
     this.removeCourse = this.removeCourse.bind(this);
@@ -117,7 +117,7 @@ class Calendar extends React.Component {
 
     // setup
     var calWidth = 700;
-    var calHeight = 500;
+    var calHeight = 700;
     var pad = 25;
     this.svg = d3.select('#calendar').append('svg')
         .attr('width', calWidth)
@@ -169,16 +169,16 @@ class Calendar extends React.Component {
     var yScale = d3.scale.linear()
         .domain([800, 1700])
         .range([0, 200]);
-    var y = course => yScale(course.startTime);
+    var y = course => yScale(course.startTimeDec);
     this.svg.append('g').selectAll('rect')
       .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`)
       .enter().append('rect')
         .attr('width', 75)
-        .attr('height', m => (m.endTime - m.startTime) * 0.7)
+        .attr('height', m => (m.endTimeDec - m.startTimeDec) * 0.7)
         .attr('x', x)
         .attr('y', y)
         .attr('class', 'item meetings')
-        .attr('transform', 'translate(50, 0)');
+        .attr('transform', 'translate(50, 50)');
 
     // labels
     this.svg.append('g').selectAll('text')
@@ -210,8 +210,8 @@ class Calendar extends React.Component {
     };
     var yScale = d3.scale.linear()
         .domain([800, 1700])
-        .range([0, 200]);
-    var y = course => yScale(course.startTime);
+        .range([0, 380]);
+    var y = course => yScale(course.startTimeDec);
 
     // meetings
     var meetings = this.svg.selectAll('.item.meetings')
@@ -219,9 +219,9 @@ class Calendar extends React.Component {
     meetings.enter().append('rect')
         .attr('width', 75)
         .attr('class', 'item meetings')
-        .attr('transform', 'translate(50, 0)');
+        .attr('transform', 'translate(50, 20)');
     meetings
-        .attr('height', m => (m.endTime - m.startTime) * 0.7)
+        .attr('height', m => (m.endTimeDec - m.startTimeDec) * 0.4)
         .attr('x', x)
         .attr('y', y);
     meetings.exit().remove();
@@ -230,10 +230,10 @@ class Calendar extends React.Component {
     var labels = this.svg.selectAll('.meetings.labels')
       .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
     labels.enter().append('text')
-        .attr('x', x)
+        .attr('x', m => x(m) + 37)
         .attr('y', m => y(m) + 20)
-        .attr('class', 'sm meetings labels')
-        .attr('transform', 'translate(50, 0)')
+        .attr('class', 'sm meetings labels anchor-middle')
+        .attr('transform', 'translate(50, 20)')
         .text(m => `${m.dept} ${m.level} - ${m.section}`);
     labels.exit().remove();
   }

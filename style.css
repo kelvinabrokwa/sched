@@ -1,0 +1,14 @@
+html, body { font-family: avenir; }
+.item { stroke: #000; fill: #fff; }
+.item:hover { fill: #D3D3D3; }
+.line { stroke-width: 1; stroke: #000; }
+.left { float: left; }
+.border-left { border-left: solid 1px #000; }
+.mr4 { margin-right: 40px; }
+.full-height { height: 100%; }
+.container { width: 85%; margin: 0 auto; }
+.pad2 { padding: 20px; }
+.sm { font-size: 10px; }
+.anchor-middle { text-anchor: middle; }
+.underline { text-decoration: underline; }
+.mb2 { margin-bottom: 20px; }

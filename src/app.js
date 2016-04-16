@@ -12,7 +12,7 @@ export default class App extends React.Component {
     this.removeCourse = this.removeCourse.bind(this);
   }
   componentWillMount() {
-    fetch('/data/data.json')
+    fetch('https://raw.githubusercontent.com/kelvinabrokwa/sched/gh-pages/data/data.json')
       .then(d => d.json())
       .then(data => this.setState({ data }));
   }
@@ -85,7 +85,7 @@ class Search extends React.Component {
     var { options, type } = this.props;
     return <div>
       <div>{type}:</div>
-      <select onChange={this.onSelect.bind(this)}>
+      <select onChange={this.onSelect.bind(this)} className='full-width'>
         <option>---</option>
         {options.map((op, i) => <option key={i}>{op}</option>)}
       </select>
@@ -97,7 +97,10 @@ class SelectedList extends React.Component {
   render() {
     var { courses } = this.props;
     return <div>
-      {courses.map((c, i) => <div key={i} onClick={this.props.remove.bind(this, c)}>{`${c[0]} ${c[1]} - ${c[2]}`}</div>)}
+      {courses.map((c, i) =>
+        <div key={i} >
+          <span className='icon-close' onClick={this.props.remove.bind(this, c)}>x</span>{`${c[0]} ${c[1]} - ${c[2]}`}
+        </div>)}
     </div>;
   }
 }
@@ -110,7 +113,7 @@ class Calendar extends React.Component {
     };
   }
   componentDidMount() {
-    var courses = this.state.courses;
+    var { courses } = this.state;
 
     // setup
     var calWidth = 700;
@@ -159,13 +162,16 @@ class Calendar extends React.Component {
     var xScale = d3.scale.linear()
       .domain([0, 4])
       .range([0, 400]);
-    var x = (course, i) => xScale(['M', 'T', 'W', 'R', 'F'].indexOf(course.meetDay)) + padx * i;
+    var x = course => {
+      var i = ['M', 'T', 'W', 'R', 'F'].indexOf(course.meetDay);
+      return xScale(i) + i * padx;
+    };
     var yScale = d3.scale.linear()
         .domain([800, 1700])
         .range([0, 200]);
     var y = course => yScale(course.startTime);
     this.svg.append('g').selectAll('rect')
-      .data(courses)
+      .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`)
       .enter().append('rect')
         .attr('width', 75)
         .attr('height', m => (m.endTime - m.startTime) * 0.7)
@@ -193,7 +199,43 @@ class Calendar extends React.Component {
         }
         return p;
       }, []);
-    console.log(courses);
+
+    var padx = 30;
+    var xScale = d3.scale.linear()
+      .domain([0, 4])
+      .range([0, 400]);
+    var x = course => {
+      var i = ['M', 'T', 'W', 'R', 'F'].indexOf(course.meetDay);
+      return xScale(i) + i * padx;
+    };
+    var yScale = d3.scale.linear()
+        .domain([800, 1700])
+        .range([0, 200]);
+    var y = course => yScale(course.startTime);
+
+    // meetings
+    var meetings = this.svg.selectAll('.item.meetings')
+      .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
+    meetings.enter().append('rect')
+        .attr('width', 75)
+        .attr('class', 'item meetings')
+        .attr('transform', 'translate(50, 0)');
+    meetings
+        .attr('height', m => (m.endTime - m.startTime) * 0.7)
+        .attr('x', x)
+        .attr('y', y);
+    meetings.exit().remove();
+
+    // labels
+    var labels = this.svg.selectAll('.meetings.labels')
+      .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
+    labels.enter().append('text')
+        .attr('x', x)
+        .attr('y', m => y(m) + 20)
+        .attr('class', 'sm meetings labels')
+        .attr('transform', 'translate(50, 0)')
+        .text(m => `${m.dept} ${m.level} - ${m.section}`);
+    labels.exit().remove();
   }
   render() {
     return <div>

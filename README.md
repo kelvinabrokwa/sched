@@ -1,4 +1,5 @@
-# sched
----
+# [sched](http://abrokwa.org/sched/)
 
-myedu replacement for W&M
+A myedu replacement for W&M
+
+Build with [React.js](https://facebook.github.io/react/) + [D3.js](https://d3js.org/).

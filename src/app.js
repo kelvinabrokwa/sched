@@ -5,7 +5,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       data: {},
-      courses: [['CSCI', '303', '01'], ['MATH', '451', '01'], ['CSCI', '420', '01']]
+      courses: []
     };
     this.addCourse = this.addCourse.bind(this);
     this.removeCourse = this.removeCourse.bind(this);
@@ -15,6 +15,14 @@ export default class App extends React.Component {
     fetch('https://raw.githubusercontent.com/kelvinabrokwa/sched/gh-pages/data/data.json')
       .then(d => d.json())
       .then(data => this.setState({ data }));
+    var query = window.location.href.split('q=');
+    if (query.length < 2) return;
+    try {
+      this.setState({ courses: JSON.parse(decodeURIComponent(query[1])) });
+    }
+    catch (e) {
+      console.log('incorrectly formatted url');
+    }
   }
   addCourse(dept, level, section) {
     var courses = this.state.courses;
@@ -30,13 +38,16 @@ export default class App extends React.Component {
   render() {
     var { data, courses } = this.state;
     return <div className='container'>
-      <h1>sched</h1>
-      <div className='left mr4'>
-        <Calendar courses={courses} data={data}/>
+      <h1 className='funk underline'>sched</h1>
+      <div className='flex'>
+        <div className='mr4'>
+          <Calendar courses={courses} data={data}/>
+        </div>
+        <div className='border-left pad2' style={{height: '500px'}}>
+          <SearchArea data={data} addCourse={this.addCourse} selected={this.state.courses} remove={this.removeCourse}/>
+        </div>
       </div>
-      <div className='left border-left pad2'>
-        <SearchArea data={data} addCourse={this.addCourse} selected={this.state.courses} remove={this.removeCourse}/>
-      </div>
+      <Share courses={this.state.courses}/>
     </div>;
   }
 }
@@ -105,6 +116,15 @@ class SelectedList extends React.Component {
   }
 }
 
+class Share extends React.Component {
+  render() {
+    return <div>
+      share your sched with the homies!
+      <input type='text' className='full-width' value={`http://abrokwa.org/sched/?q=${JSON.stringify(this.props.courses)}`} readOnly={true}/>
+    </div>;
+  }
+}
+
 class Calendar extends React.Component {
   constructor(props) {
     super(props);
@@ -117,7 +137,7 @@ class Calendar extends React.Component {
 
     // setup
     var calWidth = 700;
-    var calHeight = 700;
+    var calHeight = 600;
     var pad = 25;
     this.svg = d3.select('#calendar').append('svg')
         .attr('width', calWidth)
@@ -212,7 +232,6 @@ class Calendar extends React.Component {
         .domain([800, 1700])
         .range([0, 380]);
     var y = course => yScale(course.startTimeDec);
-
     // meetings
     var meetings = this.svg.selectAll('.item.meetings')
       .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
@@ -223,7 +242,8 @@ class Calendar extends React.Component {
     meetings
         .attr('height', m => (m.endTimeDec - m.startTimeDec) * 0.4)
         .attr('x', x)
-        .attr('y', y);
+        .attr('y', y)
+        .attr('fill', c => toColor(`${c.dept}${c.level}${c.section}`));
     meetings.exit().remove();
 
     // labels
@@ -244,3 +264,20 @@ class Calendar extends React.Component {
   }
 }
 
+// credit to Mapbox
+// via: https://github.com/mapbox/to-color
+function toColor(str, opacity) {
+  var rgb = [0, 0, 0, opacity || 0.75];
+  try {
+    for (var i = 0; i < str.length; i++) {
+      var v = str.charCodeAt(i);
+      var idx = v % 3;
+      rgb[idx] = (rgb[i % 3] + (13 * (v % 13))) % 20;
+    }
+  } finally {
+  return 'rgba(' +
+    rgb.map(function(c, idx) { // eslint-disable-line no-shadow
+      return idx === 3 ? c : (4 + c) * 17;
+    }).join(',') + ')';
+  }
+}

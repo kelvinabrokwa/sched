@@ -1,7 +1,6 @@
 html, body { font-family: avenir; }
-.item { stroke: #000; fill: #fff; }
-.item:hover { fill: #D3D3D3; }
-.line { stroke-width: 1; stroke: #000; }
+.item { stroke: #000; }
+.line { stroke-width: 1; stroke: gray; }
 .left { float: left; }
 .border-left { border-left: solid 1px #000; }
 .mr4 { margin-right: 40px; }
@@ -15,3 +14,41 @@ html, body { font-family: avenir; }
 .mb2 { margin-bottom: 20px; }
 .icon-close { margin-right: 10px; }
 .icon-close:hover { color: #FF0000; cursor: crosshair; }
+.flex { display: flex; }
+.funk {
+  -webkit-animation: color-change 4s infinite;
+  -moz-animation: color-change 4s infinite;
+  -o-animation: color-change 4s infinite;
+  -ms-animation: color-change 4s infinite;
+  animation: color-change 4s infinite;
+}
+@-webkit-keyframes color-change {
+    0% { color: green; }
+    50% { color: gold; }
+    100% { color: green; }
+}
+@-moz-keyframes color-change {
+    0% { color: green; }
+    50% { color: gold; }
+    100% { color: green; }
+}
+@-ms-keyframes color-change {
+    0% { color: green; }
+    50% { color: gold; }
+    100% { color: green; }
+}
+@-o-keyframes color-change {
+    0% { color: green; }
+    50% { color: gold; }
+    100% { color: green; }
+}
+@keyframes color-change {
+    0% { color: red; }
+    15% { color: orange; }
+    30% { color: gold; }
+    45% { color: green; }
+    60% { color: blue; }
+    75% { color: indigo; }
+    90% { color: violet; }
+    100% { color: red; }
+}

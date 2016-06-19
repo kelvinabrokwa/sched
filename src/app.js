@@ -177,7 +177,7 @@ class Calendar extends React.Component {
       .enter().append('text')
         .attr('x', 0)
         .attr('y', v => v * 40 + offset)
-        .text(d3.time.scale())
+        .text(d3.scale.linear())
         .attr('transform', 'translate(0, 20)');
 
     // meetings
@@ -190,7 +190,7 @@ class Calendar extends React.Component {
       return xScale(i) + i * padx;
     };
 
-    var yScale = d3.time.scale();
+    var yScale = d3.scale.linear();
     var y = course => yScale(course.startTimeDec);
     this.gridArea.append('g').selectAll('rect')
       .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`)

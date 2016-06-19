@@ -1,9 +1,5 @@
 var fs = require('fs');
-var scale = require('d3-scale');
-
-var timeScale = scale.scaleLinear()
-  .domain([0, 60])
-  .range([0, 100]);
+var moment = require('moment');
 
 fs.readFile('./raw_data.json', function(err, data) {
   if (err) throw err;
@@ -14,28 +10,24 @@ function parse(data) {
   var c, time, cd;
   data = data.map(function(d) {
     cd = d.courseId.split(' ');
-    time = d.meetTimes.split('-');
     d.dept = cd[0];
     d.level = cd[1];
     d.section = cd[2];
-    d.startTime = +time[0];
-    d.endTime = +time[1];
-    var t, min;
-    if (d.startTime) {
-      t = d.startTime.toString().split('');
-      min = timeScale(+t.splice(t.length - 2).join(''));
-      min = min.toString().split('');
-      if (min.length < 2) min.push(0);
-      d.startTimeDec = +t.concat(min).join('');
-    }
-    if (d.endTime) {
-      t = d.endTime.toString().split('');
-      min = timeScale(+t.splice(t.length - 2).join(''));
-      min = min.toString().split('');
-      if (min.length < 2) min.push(0);
-      d.endTimeDec = +t.concat(min).join('');
-    }
     d.meetDays = d.meetDays.split('').filter(function(m) { return m !== ' '; });
+
+    if (d.meetTimes) {
+      time = d.meetTimes.split('-');
+      var start = time[0];
+      var end = time[1];
+      if (!start || !end) return d;
+      var startTime = moment().startOf('day').hours(+start.substring(0, 2)).minutes(+start.substring(2, 4)).subtract(moment().startOf('day').valueOf(), 'ms');
+      var endTime = moment().startOf('day').hours(+end.substring(0, 2)).minutes(+end.substring(2, 4)).subtract(moment().startOf('day').valueOf(), 'ms');
+      var duration = moment.duration(endTime.diff(startTime));
+      d.duration = duration.asMinutes();
+      d.startTime = startTime.valueOf();
+      d.endTime = endTime.valueOf();
+    }
+
     return d;
   });
   var out = {};

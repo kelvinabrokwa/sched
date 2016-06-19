@@ -12,6 +12,7 @@ export default class App extends React.Component {
     this.removeCourse = this.removeCourse.bind(this);
   }
   componentWillMount() {
+    //fetch('/data/data.json')
     fetch('https://raw.githubusercontent.com/kelvinabrokwa/sched/gh-pages/data/data.json')
       .then(d => d.json())
       .then(data => this.setState({ data }));
@@ -137,7 +138,7 @@ class Calendar extends React.Component {
 
     // setup
     var calWidth = 700;
-    var calHeight = 600;
+    var calHeight = 1200;
     var pad = 25;
     this.svg = d3.select('#calendar').append('svg')
         .attr('width', calWidth)
@@ -145,16 +146,18 @@ class Calendar extends React.Component {
       .append('g')
         .attr('transform', `translate(${pad},${pad})`);
 
+    this.gridArea = this.svg.append('g')
+      .attr('transform', 'translate(20, 20)');
+
     // grid
-    this.svg.append('g').selectAll('line')
-      .data(d3.range(0, 12))
+    this.gridArea.append('g').selectAll('line')
+      .data(d3.range(0, 24))
       .enter().append('line')
         .attr('x1', 0)
         .attr('x2', calWidth)
         .attr('y1', h => h * 40)
         .attr('y2', h => h * 40)
         .attr('class', 'line')
-        .attr('transform', 'translate(20, 20)');
 
     // day label
     var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -170,11 +173,11 @@ class Calendar extends React.Component {
     // time
     var offset = 4;
     this.svg.append('g').selectAll('text')
-      .data(d3.range(0, 12))
+      .data(d3.range(0, 24))
       .enter().append('text')
         .attr('x', 0)
         .attr('y', v => v * 40 + offset)
-        .text(d3.scale.linear().domain([0, 12]).range([8, 20]))
+        .text(d3.time.scale())
         .attr('transform', 'translate(0, 20)');
 
     // meetings
@@ -186,29 +189,26 @@ class Calendar extends React.Component {
       var i = ['M', 'T', 'W', 'R', 'F'].indexOf(course.meetDay);
       return xScale(i) + i * padx;
     };
-    var yScale = d3.scale.linear()
-        .domain([800, 1700])
-        .range([0, 200]);
+
+    var yScale = d3.time.scale();
     var y = course => yScale(course.startTimeDec);
-    this.svg.append('g').selectAll('rect')
+    this.gridArea.append('g').selectAll('rect')
       .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`)
       .enter().append('rect')
         .attr('width', 75)
-        .attr('height', m => (m.endTimeDec - m.startTimeDec) * 0.7)
+        .attr('height', m => m.duration * 0.7)
         .attr('x', x)
         .attr('y', y)
-        .attr('class', 'item meetings')
-        .attr('transform', 'translate(50, 50)');
+        .attr('class', 'item meetings');
 
     // labels
-    this.svg.append('g').selectAll('text')
+    this.gridArea.append('g').selectAll('text')
       .data(courses)
       .enter().append('text')
         .attr('x', x)
         .attr('y', m => y(m) + 20)
         .text(m => `${m.dept} ${m.level} - ${m.section}`)
-        .attr('class', 'sm meetings labels')
-        .attr('transform', 'translate(50, 0)');
+        .attr('class', 'sm meetings labels');
   }
   componentWillReceiveProps(props) {
     var { data, courses } = props;
@@ -229,32 +229,35 @@ class Calendar extends React.Component {
       return xScale(i) + i * padx;
     };
     var yScale = d3.scale.linear()
-        .domain([800, 1700])
-        .range([0, 380]);
-    var y = course => yScale(course.startTimeDec);
+        .domain([0, 86399999])
+          .range([0, 960]);
+    // var y = course => yScale(course.startTime);
+    function y(course) {
+      console.log(course.startTime);
+      console.log(yScale(course.startTime));
+      return yScale(course.startTime);
+    }
     // meetings
-    var meetings = this.svg.selectAll('.item.meetings')
+    var meetings = this.gridArea.selectAll('.item.meetings')
       .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
     meetings.enter().append('rect')
-        .attr('width', 75)
-        .attr('class', 'item meetings')
-        .attr('transform', 'translate(50, 20)');
+      .attr('width', 75)
+      .attr('class', 'item meetings');
     meetings
-        .attr('height', m => (m.endTimeDec - m.startTimeDec) * 0.4)
-        .attr('x', x)
-        .attr('y', y)
-        .attr('fill', c => toColor(`${c.dept}${c.level}${c.section}`));
+      .attr('height', m => m.duration * 0.7)
+      .attr('x', x)
+      .attr('y', y)
+      .attr('fill', c => toColor(`${c.dept}${c.level}${c.section}`));
     meetings.exit().remove();
 
     // labels
-    var labels = this.svg.selectAll('.meetings.labels')
+    var labels = this.gridArea.selectAll('.meetings.labels')
       .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
     labels.enter().append('text')
-        .attr('x', m => x(m) + 37)
-        .attr('y', m => y(m) + 20)
-        .attr('class', 'sm meetings labels anchor-middle')
-        .attr('transform', 'translate(50, 20)')
-        .text(m => `${m.dept} ${m.level} - ${m.section}`);
+      .attr('x', m => x(m) + 37)
+      .attr('y', m => y(m) + 20)
+      .attr('class', 'sm meetings labels anchor-middle')
+      .text(m => `${m.dept} ${m.level} - ${m.section}`);
     labels.exit().remove();
   }
   render() {

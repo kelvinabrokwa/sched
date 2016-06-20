@@ -1,4 +1,7 @@
-html, body { font-family: avenir; }
+html, body {
+  font-family: avenir;
+  background-image: url('geometry2.png');
+}
 .item { stroke: #000; }
 .line { stroke-width: 1; stroke: gray; }
 .flex { display: flex; }

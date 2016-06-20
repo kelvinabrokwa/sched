@@ -1,4 +1,3 @@
-import React from 'react';
 import { toColor, oclock } from './utils';
 import moment from 'moment';
 

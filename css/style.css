@@ -4,9 +4,11 @@ html, body {
 }
 .item { stroke: #000; }
 .line { stroke-width: 1; stroke: gray; }
-.flex { display: flex; }
-.flex-4 { flex: 4; }
-.flex-1 { flex: 1; }
+@media screen and (min-width: 700px) {
+  .flex { display: flex; }
+  .flex-4 { flex: 4; }
+  .flex-1 { flex: 1; }
+}
 .border-left { border-left: solid 1px #000; }
 .mr4 { margin-right: 40px; }
 .full-height { height: 100%; }

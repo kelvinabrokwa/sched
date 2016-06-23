@@ -40,7 +40,7 @@ export default class App extends React.Component {
     return <div className='container mb10'>
       <h1 className='funk underline'>sched</h1>
       <div className='flex'>
-        <div className='flex-1' style={{height: '500px'}}>
+        <div className='flex-1'>
           <SearchArea data={data} addCourse={this.addCourse} selected={this.state.courses} remove={this.removeCourse}/>
         </div>
         <div className='flex-4'>

@@ -21,6 +21,7 @@ html, body {
 .icon-close { margin-right: 10px; }
 .icon-close:hover { color: #FF0000; cursor: crosshair; }
 .keyline-top { border-top: 1px solid #000; }
+.clickable { cursor: pointer; }
 .funk {
   -webkit-animation: color-change 4s infinite;
   -moz-animation: color-change 4s infinite;

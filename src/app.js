@@ -9,7 +9,6 @@ export default class App extends React.Component {
     };
     this.addCourse = this.addCourse.bind(this);
     this.removeCourse = this.removeCourse.bind(this);
-    this.removeCourse = this.removeCourse.bind(this);
   }
   componentWillMount() {
     //fetch('/data/data.json')
@@ -45,7 +44,7 @@ export default class App extends React.Component {
           <SearchArea data={data} addCourse={this.addCourse} selected={this.state.courses} remove={this.removeCourse}/>
         </div>
         <div className='flex-4'>
-          <Calendar courses={courses} data={data}/>
+          <Calendar courses={courses} data={data} removeCourse={this.removeCourse}/>
         </div>
       </div>
       <Share courses={this.state.courses}/>

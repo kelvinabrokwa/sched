@@ -108,28 +108,44 @@ export default class Calendar extends React.Component {
       .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
 
     meetings.enter().append('rect')
-      .attr('width', rectWidth)
-      .attr('class', 'item meetings');
+        .attr('width', rectWidth)
+        .attr('class', 'item meetings')
+        .attr('height', m => m.duration * 0.7)
+        .attr('x', x)
+        .attr('y', 0)
+        .attr('fill', c => toColor(`${c.dept}${c.level}${c.section}`))
+      .transition()
+        .duration(600)
+        .attr('y', y);
 
-    meetings
-      .attr('height', m => m.duration * 0.7)
-      .attr('x', x)
-      .attr('y', y)
-      .attr('fill', c => toColor(`${c.dept}${c.level}${c.section}`));
 
-    meetings.exit().remove();
+    meetings.exit()
+      .transition()
+        .duration(600)
+        .attr('y', 500)
+        .style('fill-opacity', 1e-6)
+        .style('stroke-opacity', 1e-6)
+        .remove();
 
     // labels
     var labels = this.rects.selectAll('.meetings.labels')
       .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
 
     labels.enter().append('text')
-      .attr('x', m => x(m) + rectWidth / 2)
-      .attr('y', m => y(m) + 20)
-      .attr('class', 'sm meetings labels anchor-middle')
-      .text(m => `${m.dept} ${m.level} - ${m.section}`);
+        .attr('x', m => x(m) + rectWidth / 2)
+        .attr('y', 0)
+        .attr('class', 'sm meetings labels anchor-middle')
+        .text(m => `${m.dept} ${m.level} - ${m.section}`)
+      .transition()
+        .duration(600)
+        .attr('y', m => y(m) + 20);
 
-    labels.exit().remove();
+    labels.exit()
+      .transition()
+        .duration(600)
+        .attr('y', 500)
+        .style('fill-opacity', 1e-6)
+        .remove();
 
     // x button
     var deleteButtons = this.rects.selectAll('.meetings.deleteButton')
@@ -137,10 +153,13 @@ export default class Calendar extends React.Component {
 
     deleteButtons.enter().append('text')
       .attr('x', d => x(d) + rectWidth - 10)
-      .attr('y', d => y(d) + 10)
+      .attr('y', 0)
       .text('x')
         .attr('class', 'meetings sm deleteButton clickable')
-        .on('click', d => { this.props.removeCourse([d.dept, d.level, d.section]); });
+        .on('click', d => { this.props.removeCourse([d.dept, d.level, d.section]); })
+      .transition()
+        .duration(600)
+        .attr('y', d => y(d) + 10);
 
     deleteButtons.exit().remove();
   }

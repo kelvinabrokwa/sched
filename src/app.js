@@ -5,6 +5,8 @@ import ShareContainer from './containers/share_container';
 import CourseSelectContainer from './containers/course_select_container';
 
 const App = () => (<div>
+  <h1 className='funk'>sched</h1>
+  <hr />
   <CourseSelectContainer />
   <hr />
   <CourseListContainer />

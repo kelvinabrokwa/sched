@@ -30,6 +30,7 @@ class CourseSelect extends React.Component {
       levels = data.get(dept).keySeq().sort();
     }
     return (<div>
+      <div>select course</div>
       <div>
         <select onChange={this.onDeptSelect.bind(this)}>
           <option></option>

@@ -2,22 +2,23 @@ import Immutable from 'immutable';
 import { connect } from 'react-redux';
 import Share from '../components/share';
 
-const flattenSections = courses => courses
-  .filter(course => course.get('sections').size > 0)
-  .reduce((list, course) => {
-    for (let i = 0; i < course.get('sections').size; i++) {
-      list = list.push(Immutable.List([
-        course.get('dept'),
-        course.get('level'),
-        course.getIn(['sections', i])
-      ]));
-    }
-    return list;
-  }, Immutable.List());
-
-const mapStateToProps = state => ({
-  courses: flattenSections(state.get('courses')).toJS()
-});
+const mapStateToProps = state => {
+  const courses = JSON.stringify(state.get('courses')
+    .map(course => Immutable.List([
+      course.get('dept'),
+      course.get('level'),
+      course.get('sections')
+    ])).toJS());
+  const qs = `q=${courses}`;
+  if (history.pushState) {
+    const url = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${qs}`;
+    window.history.pushState({ path: url }, '', url);
+  }
+  localStorage.setItem('schedHistory', courses);
+  return {
+    queryString: qs
+  };
+};
 
 const mapDispatchToProps = () => ({});
 

@@ -4,7 +4,11 @@ const SelectedCourse = ({ dept, level, sections, selectedSections, onSectionTogg
   </div>
   <div>
     {sections && sections.keySeq().map(section => <div
-      key={sections.getIn([section, 'dept']) + sections.getIn([section, 'level']) + sections.getIn([section, 'section'])}
+      key={
+        sections.getIn([section, 'dept']) +
+        sections.getIn([section, 'level']) +
+        sections.getIn([section, 'section'])
+      }
     >
       <input
         type='radio'

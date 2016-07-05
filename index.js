@@ -31,10 +31,16 @@ fetch('https://raw.githubusercontent.com/kelvinabrokwa/sched/gh-pages/data/data.
  });
 
 const initializeApp = data => {
-  const store = createStore(schedApp, Immutable.fromJS({
-    courses: [],
-    data
+  const store = createStore(schedApp, Immutable.Map({
+    courses: Immutable.List(parseURLOrHistory()
+      .map(course => Immutable.Map({
+        dept: course[0],
+        level: course[1],
+        sections: Immutable.List(course[2])
+      }))),
+    data: Immutable.fromJS(data)
   }));
+
   ReactDOM.render(
     <Provider store={store}>
       <App />
@@ -42,3 +48,18 @@ const initializeApp = data => {
     document.getElementById('app')
   );
 };
+
+function parseURLOrHistory() {
+  const query = window.location.href.split('q=');
+  if (query.length > 1) {
+    try {
+      return JSON.parse(decodeURIComponent(query[1]));
+    } catch (e) {
+      console.log('Incorrectly link format');
+    }
+  }
+  if (localStorage.schedHistory) {
+    return JSON.parse(localStorage.schedHistory);
+  }
+  return [];
+}

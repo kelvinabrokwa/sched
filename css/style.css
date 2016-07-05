@@ -24,6 +24,18 @@ html, body {
 .icon-close:hover { color: #FF0000; cursor: crosshair; }
 .keyline-top { border-top: 1px solid #000; }
 .clickable { cursor: pointer; }
+.hover-invert:hover {
+  background-color: #000;
+  color: #FFF;
+}
+.hover-edit-icon:hover::after {
+  content: '✐';
+}
+.hover-red:hover { color: red; }
+
+/**
+ * color changing text
+ */
 .funk {
   -webkit-animation: color-change 4s infinite;
   -moz-animation: color-change 4s infinite;

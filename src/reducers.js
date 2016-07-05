@@ -12,6 +12,11 @@ function schedApp(state, action) {
   switch (action.type) {
 
     case ADD_COURSE:
+      if (state.get('courses')
+        .find(course =>
+          course.get('dept') === action.dept && course.get('level') === action.level)) {
+        return state;
+      }
       return state.updateIn(['courses'], Immutable.List(), list => list
         .push(Immutable.Map({
           dept: action.dept,

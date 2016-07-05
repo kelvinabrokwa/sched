@@ -2,6 +2,6 @@
 
 A site for creating class schedules.
 
-[Example schedule](http://abrokwa.org/sched/?q=[[%22MATH%22,%22451%22,%2201%22],[%22ART%22,%22211%22,%2205%22],[%22PHYS%22,%22101%22,%2201%22],[%22MATH%22,%22351%22,%2201%22],[%22CSCI%22,%22426%22,%2201%22]])
+[Example schedule](http://abrokwa.org/sched/?q=[["CSCI","303",["01"]],["CSCI","426",["01"]],["PHYS","101",["01"]],["MATH","351",["01"]],["MATH","451",["01"]],["ART","211",["06"]]])
 
 Built with [React.js](https://facebook.github.io/react/) + [D3.js](https://d3js.org/).

@@ -21,10 +21,12 @@ function schedApp(state, action) {
       );
 
     case REMOVE_COURSE:
-      return state.updateIn(['courses'], Immutable.List(), list => list
+      state = state.updateIn(['courses'], Immutable.List(), list => list
         .filterNot(course =>
           course.get('dept') === action.dept && course.get('level') === action.level)
       );
+
+      return state.set('selectedCourse', Immutable.Map());
 
     case ADD_SECTION:
       break;

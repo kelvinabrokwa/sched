@@ -6,8 +6,11 @@ import CourseSelectContainer from './containers/course_select_container';
 
 const App = () => (<div>
   <CourseSelectContainer />
+  <hr />
   <CourseListContainer />
+  <hr />
   <SelectedCourseContainer />
+  <hr />
   <CalendarContainer />
   <ShareContainer />
 </div>);

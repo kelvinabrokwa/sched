@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addCourse } from '../actions';
+import { addCourse, selectCourse } from '../actions';
 import CourseSelect from '../components/course_select';
 
 const mapStateToProps = state => ({
@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   addCourse: (dept, level) => {
     dispatch(addCourse(dept, level));
+    dispatch(selectCourse(dept, level));
   }
 });
 

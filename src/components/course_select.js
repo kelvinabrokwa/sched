@@ -10,7 +10,10 @@ class CourseSelect extends React.Component {
     this.addCourse = this.addCourse.bind(this);
   }
   onDeptSelect(e) {
-    this.setState({ dept: e.target.value, level: null });
+    const { data } = this.props;
+    const dept = e.target.value;
+    if (!dept) return;
+    this.setState({ dept, level: data.get(dept).keySeq().sort().get(0) });
   }
   onLevelSelect(e) {
     this.setState({ level: e.target.value });
@@ -29,12 +32,13 @@ class CourseSelect extends React.Component {
     return (<div>
       <div>
         <select onChange={this.onDeptSelect.bind(this)}>
+          <option></option>
           {depts.map(dept_ => <option key={dept_}>{dept_}</option>)}
         </select>
       </div>
       {levels && <div>
         <select onChange={this.onLevelSelect}>
-          {levels.map(level => <option key={level}>{level}</option>)}
+          {levels.map(level_ => <option key={level_}>{level_}</option>)}
         </select>
       </div>}
       {(dept && level) && <div>

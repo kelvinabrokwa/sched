@@ -16,7 +16,7 @@ const SelectedCourse = ({ dept, level, sections, selectedSections, onSectionTogg
           sections.getIn([section, 'section'])
         )}
       />
-        {sections.getIn([section, 'section'])}: {sections.getIn([section, 'meetDays']).join(',')} {sections.getIn([section, 'meetTimes'])}
+        {sections.getIn([section, 'section'])}: {sections.getIn([section, 'meetDays']).join(',')} | {sections.getIn([section, 'meetTimes'])} | <a target='_blank' href={`http://www.ratemyprofessors.com/search.jsp?query=${sections.getIn([section, 'instructor'])}`}>{sections.getIn([section, 'instructor'])}</a>
     </div>)}
   </div>
 </div>);

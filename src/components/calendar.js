@@ -1,7 +1,7 @@
-import { toColor, oclock } from './utils';
+import { toColor, oclock } from '../utils';
 import moment from 'moment';
 
-export default class Calendar extends React.Component {
+class Calendar extends React.Component {
 
   constructor(props) {
     super(props);
@@ -12,13 +12,11 @@ export default class Calendar extends React.Component {
   }
 
   componentDidMount() {
-    var { courses } = this.state;
-
     // setup
     this.rectWidth = 90;
-    var calWidth = 700;
-    var calHeight = 700;
-    var pad = 25;
+    const calWidth = 700;
+    const calHeight = 700;
+    const pad = 25;
 
     this.svg = d3.select('#calendar').append('svg')
         .attr('width', calWidth)
@@ -37,10 +35,10 @@ export default class Calendar extends React.Component {
         .attr('x2', calWidth)
         .attr('y1', h => h * 40)
         .attr('y2', h => h * 40)
-        .attr('class', 'line')
+        .attr('class', 'line');
 
     // day axis
-    var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
     this.svg.append('g').selectAll('text')
       .data(days)
       .enter().append('text')
@@ -51,7 +49,7 @@ export default class Calendar extends React.Component {
           .attr('transform', 'translate(110, 0)');
 
     // time axis
-    var offset = 4;
+    const offset = 4;
     this.svg.append('g').selectAll('text')
       .data(d3.range(7, 23))
       .enter().append('text')
@@ -61,21 +59,29 @@ export default class Calendar extends React.Component {
         .attr('transform', 'translate(0, 20)');
 
     // scales
-    var xScale = this.xScale = d3.scale.linear()
+    const xScale = this.xScale = d3.scale.linear()
       .domain([0, 4])
       .range([0, 500]);
-    var x = this.x = course => {
-      var i = ['M', 'T', 'W', 'R', 'F'].indexOf(course.meetDay);
+    this.x = course => {
+      const i = ['M', 'T', 'W', 'R', 'F'].indexOf(course.meetDay);
       return xScale(i);
     };
 
-    var t7am = moment().startOf('day').hours(7).subtract(moment().startOf('day').valueOf(), 'ms').valueOf();
-    var t10pm = moment().startOf('day').hours(22).subtract(moment().startOf('day').valueOf(), 'ms').valueOf();
+    const t7am = moment()
+      .startOf('day')
+      .hours(7)
+      .subtract(moment().startOf('day').valueOf(), 'ms')
+      .valueOf();
+    const t10pm = moment()
+      .startOf('day')
+      .hours(22)
+      .subtract(moment().startOf('day').valueOf(), 'ms')
+      .valueOf();
 
-    var yScale = this.yScale = d3.scale.linear()
+    const yScale = this.yScale = d3.scale.linear()
         .domain([t7am, t10pm]) // 7am to 10pm
           .range([0, 600]);
-    var y = this.y = course => yScale(course.startTime);
+    this.y = course => yScale(course.startTime);
 
     // g that contains items on the calendar
     this.rects = this.gridArea.append('g')
@@ -90,21 +96,22 @@ export default class Calendar extends React.Component {
   }
 
   update(props) {
-    var { x, y, rectWidth } = this;
-    var { data, courses } = props;
+    const { x, y, rectWidth } = this;
+    const { data } = props;
+    let { courses } = props;
 
     if (!Object.keys(data).length) return; // data hasn't loaded yet
 
     courses = courses.map(c => data[c[0]][c[1]][c[2]])
       .reduce((p, c) => {
-        for (var i = 0; i < c.meetDays.length; i++) {
-          p.push(Object.assign({}, c, {meetDay: c.meetDays[i]}));
+        for (let i = 0; i < c.meetDays.length; i++) {
+          p.push(Object.assign({}, c, { meetDay: c.meetDays[i] }));
         }
         return p;
       }, []);
 
     // meetings
-    var meetings = this.rects.selectAll('.item.meetings')
+    const meetings = this.rects.selectAll('.item.meetings')
       .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
 
     meetings.enter().append('rect')
@@ -128,7 +135,7 @@ export default class Calendar extends React.Component {
         .remove();
 
     // labels
-    var labels = this.rects.selectAll('.meetings.labels')
+    const labels = this.rects.selectAll('.meetings.labels')
       .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
 
     labels.enter().append('text')
@@ -148,7 +155,7 @@ export default class Calendar extends React.Component {
         .remove();
 
     // x button
-    var deleteButtons = this.rects.selectAll('.meetings.deleteButton')
+    const deleteButtons = this.rects.selectAll('.meetings.deleteButton')
       .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
 
     deleteButtons.enter().append('text')
@@ -156,7 +163,7 @@ export default class Calendar extends React.Component {
       .attr('y', 0)
       .text('x')
         .attr('class', 'meetings sm deleteButton clickable')
-        .on('click', d => { this.props.removeCourse([d.dept, d.level, d.section]); })
+        .on('click', d => { this.props.removeSection(d.dept, d.level, d.section); })
       .transition()
         .duration(600)
         .attr('y', d => y(d) + 10);
@@ -165,9 +172,15 @@ export default class Calendar extends React.Component {
   }
 
   render() {
-    return <div>
+    return (<div>
       <div id='calendar'></div>
-    </div>;
+    </div>);
   }
 
 }
+
+Calendar.propTypes = {
+  removeSection: React.PropTypes.func
+};
+
+export default Calendar;

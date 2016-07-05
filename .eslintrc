@@ -1,11 +1,14 @@
 {
+  "extends": "airbnb",
   "parser": "babel-eslint",
   "env": {
     "browser": true,
     "node": true
   },
   "globals": {
-    "d3": true
+    "d3": true,
+    "React": true,
+    "ReactDOM": true
   },
   "plugins": [
     "react"
@@ -14,6 +17,12 @@
     "strict": [0],
     "quotes": [2, "single"],
     "curly": [0],
-    "no-use-before-define": [0]
+    "no-use-before-define": [0],
+    "comma-dangle": [0],
+    "new-cap": [0],
+    "react/jsx-first-prop-new-line": [0],
+    "jsx-quotes": [0],
+    "newline-per-chained-call": [0],
+    "no-param-reassign": [0]
   }
 }

@@ -11,7 +11,7 @@ const mapStateToProps = state => {
     level,
     sections: state.getIn(['data', dept, level]),
     selectedSections: state.get('courses').find(course =>
-      course.get('dept') === dept && course.get('level')
+      course.get('dept') === dept && course.get('level') === level
     ).get('sections')
   };
 };

@@ -3,20 +3,20 @@ const SelectedCourse = ({ dept, level, sections, selectedSections, onSectionTogg
     {dept} {level}
   </div>
   <div>
-    {sections && sections.map(section => <div
-      key={section.get('dept') + section.get('level') + section.get('section')}
+    {sections && sections.keySeq().map(section => <div
+      key={sections.getIn([section, 'dept']) + sections.getIn([section, 'level']) + sections.getIn([section, 'section'])}
     >
       <input
         type='radio'
-        checked={selectedSections.includes(section.get('section'))}
+        checked={selectedSections.includes(sections.getIn([section, 'section']))}
         onChange={onSectionToggle.bind(
           this,
-          section.get('dept'),
-          section.get('level'),
-          section.get('section')
+          sections.getIn([section, 'dept']),
+          sections.getIn([section, 'level']),
+          sections.getIn([section, 'section'])
         )}
       />
-        {section.get('section')}: {section.get('meetDays').join(',')} {section.get('meetTimes')}
+        {sections.getIn([section, 'section'])}: {sections.getIn([section, 'meetDays']).join(',')} {sections.getIn([section, 'meetTimes'])}
     </div>)}
   </div>
 </div>);

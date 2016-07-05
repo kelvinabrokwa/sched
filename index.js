@@ -22,7 +22,8 @@ import {
  *   selectedCourse: {
  *     dept: <String>,
  *     level: <String>
- *   }
+ *   },
+ *   data: {}
  * }
  */
 
@@ -37,9 +38,6 @@ const initializeApp = data => {
     courses: [],
     data
   }));
-  store.dispatch(addCourse('MATH', '451'));
-  store.dispatch(addCourse('MATH', '351'));
-  store.dispatch(addCourse('CSCI', '141'));
   ReactDOM.render(
     <Provider store={store}>
       <App />

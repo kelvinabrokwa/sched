@@ -2,7 +2,6 @@ import Immutable from 'immutable';
 import {
   ADD_COURSE,
   REMOVE_COURSE,
-  ADD_SECTION,
   REMOVE_SECTION,
   TOGGLE_SECTION,
   SELECT_COURSE
@@ -32,9 +31,6 @@ function schedApp(state, action) {
       );
 
       return state.set('selectedCourse', Immutable.Map());
-
-    case ADD_SECTION:
-      break;
 
     case REMOVE_SECTION: {
       const courseIdx = state.get('courses')
@@ -70,7 +66,6 @@ function schedApp(state, action) {
       return state;
 
   }
-  return state;
 }
 
 export default schedApp;

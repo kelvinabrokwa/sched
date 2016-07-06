@@ -5,7 +5,16 @@ import { removeSection } from '../actions';
 
 const mapStateToProps = state => {
   const courses = state.get('courses')
-    .filter(course => course.get('sections').size > 0)
+    .filter(course =>
+      course.get('sections').size > 0 &&
+      state.getIn([
+        'data',
+        course.get('dept'),
+        course.get('level'),
+        course.getIn(['sections', 0]),
+        'startTime'
+      ])
+    )
     .reduce((list, course) => {
       for (let i = 0; i < course.get('sections').size; i++) {
         list = list.push(Immutable.List([

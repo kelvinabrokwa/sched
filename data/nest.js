@@ -1,28 +1,42 @@
-var fs = require('fs');
-var moment = require('moment');
+'use strict';
+const fs = require('fs');
+const moment = require('moment');
 
-fs.readFile('./raw_data.json', function(err, data) {
+fs.readFile('./raw_data.json', (err, data) => {
   if (err) throw err;
   parse(JSON.parse(data));
 });
 
 function parse(data) {
-  var c, time, cd;
-  data = data.map(function(d) {
+  let c, time, cd;
+  data = data.map(d => {
     cd = d.courseId.split(' ');
     d.dept = cd[0];
     d.level = cd[1];
     d.section = cd[2];
-    d.meetDays = d.meetDays.split('').filter(function(m) { return m !== ' '; });
+    d.meetDays = d.meetDays.split('').filter(m => m !== ' ');
 
     if (d.meetTimes) {
       time = d.meetTimes.split('-');
-      var start = time[0];
-      var end = time[1];
-      if (!start || !end) return d;
-      var startTime = moment().startOf('day').hours(+start.substring(0, 2)).minutes(+start.substring(2, 4)).subtract(moment().startOf('day').valueOf(), 'ms');
-      var endTime = moment().startOf('day').hours(+end.substring(0, 2)).minutes(+end.substring(2, 4)).subtract(moment().startOf('day').valueOf(), 'ms');
-      var duration = moment.duration(endTime.diff(startTime));
+      const start = time[0];
+      const end = time[1];
+      if (!start || !end) {
+        d.startTime = null;
+        d.endTime = null;
+        d.duration = null;
+        return d;
+      }
+      const startTime = moment()
+        .startOf('day')
+        .hours(+start.substring(0, 2))
+        .minutes(+start.substring(2, 4))
+        .subtract(moment().startOf('day').valueOf(), 'ms');
+      const endTime = moment()
+        .startOf('day')
+        .hours(+end.substring(0, 2))
+        .minutes(+end.substring(2, 4))
+        .subtract(moment().startOf('day').valueOf(), 'ms');
+      const duration = moment.duration(endTime.diff(startTime));
       d.duration = duration.asMinutes();
       d.startTime = startTime.valueOf();
       d.endTime = endTime.valueOf();
@@ -30,8 +44,8 @@ function parse(data) {
 
     return d;
   });
-  var out = {};
-  for (var i = 0; i < data.length; i++) {
+  const out = {};
+  for (let i = 0; i < data.length; i++) {
     c = data[i];
     if (!(c.dept in out)) {
       out[c.dept] = {};

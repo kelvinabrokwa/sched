@@ -79,8 +79,8 @@ class Calendar extends React.Component {
       .valueOf();
 
     const yScale = this.yScale = d3.scale.linear()
-        .domain([t7am, t10pm]) // 7am to 10pm
-          .range([0, 600]);
+      .domain([t7am, t10pm]) // 7am to 10pm
+      .range([0, 600]);
     this.y = course => yScale(course.startTime);
 
     // g that contains items on the calendar
@@ -124,7 +124,6 @@ class Calendar extends React.Component {
       .transition()
         .duration(600)
         .attr('y', y);
-
 
     meetings.exit()
       .transition()

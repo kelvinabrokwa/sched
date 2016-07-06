@@ -11,7 +11,8 @@ const mapStateToProps = state => {
     ])).toJS());
   const qs = `q=${courses}`;
   if (history.pushState) {
-    const url = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${qs}`;
+    const url = `${window.location.protocol}//` +
+      `${window.location.host}${window.location.pathname}?${qs}`;
     window.history.pushState({ path: url }, '', url);
   }
   localStorage.setItem('schedHistory', courses);

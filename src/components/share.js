@@ -4,7 +4,7 @@ const Share = ({ queryString }) => (<div>
 </div>);
 
 Share.propTypes = {
-  courses: React.PropTypes.array
+  queryString: React.PropTypes.string
 };
 
 export default Share;

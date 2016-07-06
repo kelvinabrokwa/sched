@@ -55,7 +55,7 @@ function parseURLOrHistory() {
     try {
       return JSON.parse(decodeURIComponent(query[1]));
     } catch (e) {
-      console.log('Incorrectly link format');
+      console.log('Incorrect url format');
     }
   }
   if (localStorage.schedHistory) {

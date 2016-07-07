@@ -32,8 +32,8 @@ class CourseSelect extends React.Component {
         courseName: d[1].first().get('title')
       })).sortBy(l => l.get('level'));
     }
-    return (<div>
-      <div>select course</div>
+    return (<div className='mb2'>
+      <div>add course:</div>
       <div>
         <select onChange={this.onDeptSelect.bind(this)}>
           <option></option>

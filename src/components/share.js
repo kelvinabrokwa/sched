@@ -1,6 +1,10 @@
 const Share = ({ queryString }) => (<div>
-  share your sched with the homies!
-  <input type='text' className='full-width' value={`http://abrokwa.org/sched/?${queryString}`} readOnly={true} />
+  <div>
+    share your sched with the homies!
+  </div>
+  <div>
+    <input type='text' className='full-width' value={`http://abrokwa.org/sched/?${queryString}`} readOnly={true} />
+  </div>
 </div>);
 
 Share.propTypes = {

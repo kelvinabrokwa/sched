@@ -42,6 +42,7 @@
     "eslint-plugin-react": "^4.3.0",
     "garnish": "^5.2.0",
     "minifyify": "^7.3.3",
+    "moment": "^2.14.1",
     "react": "^15.2.0"
   }
 }

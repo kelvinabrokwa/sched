@@ -28,9 +28,6 @@ html, body {
   background-color: #000;
   color: #FFF;
 }
-.hover-edit-icon:hover::after {
-  content: '✐';
-}
 .hover-red:hover { color: red; }
 
 /**

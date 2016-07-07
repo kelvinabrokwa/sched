@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import Immutable from 'immutable';
 import Calendar from '../components/calendar.js';
 import { removeSection } from '../actions';
 

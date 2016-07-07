@@ -1,6 +1,5 @@
 // import React from 'react'; // TODO: remove in prod
 // import ReactDOM from 'react-dom'; // TODO: remove in prod
-import Immutable from 'immutable';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import App from './src/app';
@@ -16,10 +15,6 @@ import schedApp from './src/reducers';
  *       sections: [<String>]
  *     }
  *   ],
- *   selectedCourse: {
- *     dept: <String>,
- *     level: <String>
- *   },
  *   data: {}
  * }
  */

@@ -8,7 +8,9 @@
   "globals": {
     "d3": true,
     "React": true,
-    "ReactDOM": true
+    "ReactDOM": true,
+    "moment": true,
+    "Immutable": true
   },
   "plugins": [
     "react"

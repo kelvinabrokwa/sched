@@ -1,5 +1,4 @@
 import { toColor, oclock } from '../utils';
-import moment from 'moment';
 
 class Calendar extends React.Component {
 

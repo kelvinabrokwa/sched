@@ -27,7 +27,10 @@ class CourseSelect extends React.Component {
     const { dept, level } = this.state;
     let levels;
     if (dept) {
-      levels = data.get(dept).keySeq().sort();
+      levels = data.get(dept).entrySeq().map(d => Immutable.Map({
+        level: d[0],
+        courseName: d[1].first().get('title')
+      })).sortBy(l => l.get('level'));
     }
     return (<div>
       <div>select course</div>
@@ -39,7 +42,12 @@ class CourseSelect extends React.Component {
       </div>
       {levels && <div>
         <select onChange={this.onLevelSelect}>
-          {levels.map(level_ => <option key={level_}>{level_}</option>)}
+          {levels.map(level_ => <option
+            key={level_.get('level')}
+            value={level_.get('level')}
+          >
+            {level_.get('level')} - {level_.get('courseName')}
+          </option>)}
         </select>
       </div>}
       {(dept && level) && <div>

@@ -1,14 +1,15 @@
-import { selectCourse, removeCourse } from '../actions';
+import { toggleSection, removeCourse } from '../actions';
 import { connect } from 'react-redux';
 import CourseList from '../components/course_list';
 
 const mapStateToProps = state => ({
-  courses: state.get('courses')
+  courses: state.get('courses'),
+  data: state.get('data')
 });
 
 const mapDispatchToProps = dispatch => ({
-  onCourseClick: (dept, level) => {
-    dispatch(selectCourse(dept, level));
+  onSectionToggle: (dept, level, section) => {
+    dispatch(toggleSection(dept, level, section));
   },
   removeCourse: (dept, level) => {
     dispatch(removeCourse(dept, level));

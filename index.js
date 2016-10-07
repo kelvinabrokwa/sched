@@ -19,11 +19,9 @@ import schedApp from './src/reducers';
  * }
  */
 
-fetch('https://raw.githubusercontent.com/kelvinabrokwa/sched/gh-pages/data/data.json')
+fetch('https://wm-course-data.herokuapp.com/courses')
  .then(d => d.json())
- .then(data => {
-   initializeApp(data);
- });
+ .then(data => initializeApp(data));
 
 const initializeApp = data => {
   const store = createStore(schedApp, Immutable.Map({
@@ -33,7 +31,8 @@ const initializeApp = data => {
         level: course[1],
         sections: Immutable.List(course[2])
       }))),
-    data: Immutable.fromJS(data)
+    data: Immutable.fromJS(data),
+    semester: Object.keys(data)[1],
   }));
 
   ReactDOM.render(

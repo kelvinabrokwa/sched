@@ -6,11 +6,11 @@ import CourseSelectContainer from './containers/course_select_container';
 const App = () => (<div>
   <h1 className='funk'>sched</h1>
   <div className='flex'>
-    <div className=''>
+    <div>
       <CourseSelectContainer />
       <CourseListContainer />
     </div>
-    <div className=''>
+    <div>
       <CalendarContainer />
     </div>
   </div>

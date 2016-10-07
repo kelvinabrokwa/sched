@@ -3,7 +3,8 @@ import { addCourse } from '../actions';
 import CourseSelect from '../components/course_select';
 
 const mapStateToProps = state => ({
-  data: state.get('data')
+  data: state.get('data'),
+  semester: state.get('semester')
 });
 
 const mapDispatchToProps = dispatch => ({

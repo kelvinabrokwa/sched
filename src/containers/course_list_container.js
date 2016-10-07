@@ -4,7 +4,8 @@ import CourseList from '../components/course_list';
 
 const mapStateToProps = state => ({
   courses: state.get('courses'),
-  data: state.get('data')
+  data: state.get('data'),
+  semester: state.get('semester')
 });
 
 const mapDispatchToProps = dispatch => ({

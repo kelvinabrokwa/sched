@@ -1,4 +1,4 @@
-const CourseList = ({ courses, data, onSectionToggle, removeCourse }) => (<div>
+const CourseList = ({ semester, courses, data, onSectionToggle, removeCourse }) => (<div>
   {courses.map((course, i) => <div key={i} className='border-black top-right-container'>
     <div
       onClick={removeCourse.bind(this, course.get('dept'), course.get('level'))}
@@ -7,9 +7,16 @@ const CourseList = ({ courses, data, onSectionToggle, removeCourse }) => (<div>
       x
     </div>
     <div className='pad2'>
-      <div> {course.get('dept')} {course.get('level')}: {data.getIn([course.get('dept'), course.get('level')]).first().get('title')}</div>
+      <div>
+        {course.get('dept')} {course.get('level')}: {data.getIn([
+          semester,
+          course.get('dept'),
+          course.get('level')
+        ]).first().get('title')}
+      </div>
       <div>
         {data.getIn([
+          semester,
           course.get('dept'),
           course.get('level')
         ]).toIndexedSeq().map((section, id) => <div key={id}>
@@ -23,7 +30,7 @@ const CourseList = ({ courses, data, onSectionToggle, removeCourse }) => (<div>
               section.get('section')
             )}
           />
-          {section.get('section')}: {section.get('meetDays').join(',')} | {section.get('meetTimes')} | <a target='_blank' href={`http://www.ratemyprofessors.com/search.jsp?query=${section.get('instructor')}`}>{section.get('instructor')}</a>
+          {section.get('section')}: {section.get('MEET DAYS').join(',')} | {section.get('MEET TIMES')} | <a target='_blank' href={`http://www.ratemyprofessors.com/search.jsp?query=${section.get('INSTRUCTOR')}`}>{section.get('INSTRUCTOR')}</a>
         </div>)}
       </div>
     </div>

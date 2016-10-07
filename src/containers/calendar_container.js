@@ -8,6 +8,7 @@ const mapStateToProps = state => {
       course.get('sections').size > 0 &&
       state.getIn([
         'data',
+        state.get('semester'),
         course.get('dept'),
         course.get('level'),
         course.getIn(['sections', 0]),
@@ -26,7 +27,8 @@ const mapStateToProps = state => {
     }, Immutable.List());
   return {
     courses: courses.toJS(),
-    data: state.get('data').toJS()
+    data: state.get('data').toJS(),
+    semester: state.get('semester')
   };
 };
 

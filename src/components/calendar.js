@@ -101,10 +101,10 @@ class Calendar extends React.Component {
 
     if (!Object.keys(data).length) return; // data hasn't loaded yet
 
-    courses = courses.map(c => data[c[0]][c[1]][c[2]])
+    courses = courses.map(c => data[props.semester][c[0]][c[1]][c[2]])
       .reduce((p, c) => {
-        for (let i = 0; i < c.meetDays.length; i++) {
-          p.push(Object.assign({}, c, { meetDay: c.meetDays[i] }));
+        for (let i = 0; i < c['MEET DAYS'].length; i++) {
+          p.push(Object.assign({}, c, { meetDay: c['MEET DAYS'][i] }));
         }
         return p;
       }, []);
@@ -116,7 +116,7 @@ class Calendar extends React.Component {
     meetings.enter().append('rect')
         .attr('width', rectWidth)
         .attr('class', 'item meetings')
-        .attr('height', m => m.duration * 0.7)
+        .attr('height', m => (m.endTime - m.startTime) * 0.000011)
         .attr('x', x)
         .attr('y', 0)
         .attr('fill', c => toColor(`${c.dept}${c.level}${c.section}`))

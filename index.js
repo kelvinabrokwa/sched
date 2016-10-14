@@ -19,8 +19,7 @@ import schedApp from './src/reducers';
  * }
  */
 
-//fetch('https://wm-course-data.herokuapp.com/courses')
-fetch('http://localhost:8000/courses')
+fetch('https://wm-course-data.herokuapp.com/courses')
  .then(d => d.json())
  .then(data => initializeApp(data));
 

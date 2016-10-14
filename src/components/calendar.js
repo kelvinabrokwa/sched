@@ -161,7 +161,7 @@ class Calendar extends React.Component {
       .attr('y', 0)
       .text('x')
         .attr('class', 'meetings sm deleteButton clickable')
-        .on('click', d => { this.props.removeSection(d.dept, d.level, d.section); })
+        .on('click', d => { this.props.removeSection(d.department, d.level, d.section); })
       .transition()
         .duration(600)
         .attr('y', d => y(d) + 10);

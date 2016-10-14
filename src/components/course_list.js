@@ -25,7 +25,7 @@ const CourseList = ({ semester, courses, data, onSectionToggle, removeCourse }) 
             checked={course.get('sections').includes(section.get('section'))}
             onChange={onSectionToggle.bind(
               this,
-              section.get('dept'),
+              section.get('department'),
               section.get('level'),
               section.get('section')
             )}

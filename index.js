@@ -19,7 +19,8 @@ import schedApp from './src/reducers';
  * }
  */
 
-fetch('https://wm-course-data.herokuapp.com/courses')
+//fetch('https://wm-course-data.herokuapp.com/courses')
+fetch('http://localhost:8000/courses')
  .then(d => d.json())
  .then(data => initializeApp(data));
 
@@ -32,7 +33,7 @@ const initializeApp = data => {
         sections: Immutable.List(course[2])
       }))),
     data: Immutable.fromJS(data),
-    semester: Object.keys(data)[1],
+    semester: Object.keys(data)[0],
   }));
 
   ReactDOM.render(

@@ -30,7 +30,7 @@ function schedApp(state, action) {
 
       return state.set('selectedCourse', Immutable.Map());
 
-    case REMOVE_SECTION: {
+    case REMOVE_SECTION:
       const courseIdx = state.get('courses')
         .findIndex(c => c.get('dept') === action.dept && c.get('level') === action.level);
       let course = state.getIn(['courses', courseIdx]);
@@ -38,7 +38,6 @@ function schedApp(state, action) {
         .filterNot(section => section === action.section)
       );
       return state.setIn(['courses', courseIdx], course);
-    }
 
     case TOGGLE_SECTION: {
       const courseIdx = state.get('courses')

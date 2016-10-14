@@ -11,7 +11,7 @@
   "scripts": {
     "start": "budo ./index.js --serve=bundle.js --live --open -- -t [ babelify --presets [ es2015 react ] ] | garnish",
     "test": "./node_modules/eslint/bin/eslint.js ./src && ./test/run.sh",
-    "build": "browserify --transform [ babelify --presets [ es2015 react ] ] --debug -p [ minifyify --map bundle.map.json --output bundle.map.json ] index.js -o bundle.js"
+    "build": "browserify --transform [ babelify --presets [ es2015 react ] ] --debug --plugin [ minifyify --map bundle.map.json --output bundle.map.json ] index.js --outfile bundle.js"
   },
   "repository": {
     "type": "git",

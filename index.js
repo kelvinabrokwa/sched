@@ -4,9 +4,10 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import App from './src/app';
 import schedApp from './src/reducers';
+import { parseURLOrHistory } from './src/history';
 
 /**
- * shape:
+ * Store format:
  * {
  *   courses: [
  *     {
@@ -15,7 +16,8 @@ import schedApp from './src/reducers';
  *       sections: [<String>]
  *     }
  *   ],
- *   data: {}
+ *   data: {},
+ *   semester: <String>
  * }
  */
 
@@ -24,15 +26,24 @@ fetch('https://wm-course-data.herokuapp.com/courses')
  .then(data => initializeApp(data));
 
 const initializeApp = data => {
+  const history = parseURLOrHistory();
+  let { semester } = history;
+  let { schedule } = history;
+
+  if (!semester || Object.keys(data).indexOf(semester) === -1) {
+    semester = Object.keys(data)[0];
+    schedule = [];
+  }
+
   const store = createStore(schedApp, Immutable.Map({
-    courses: Immutable.List(parseURLOrHistory()
+    courses: Immutable.List(schedule
       .map(course => Immutable.Map({
         dept: course[0],
         level: course[1],
         sections: Immutable.List(course[2])
       }))),
     data: Immutable.fromJS(data),
-    semester: Object.keys(data)[0],
+    semester,
   }));
 
   ReactDOM.render(
@@ -43,17 +54,3 @@ const initializeApp = data => {
   );
 };
 
-function parseURLOrHistory() {
-  const query = window.location.href.split('q=');
-  if (query.length > 1) {
-    try {
-      return JSON.parse(decodeURIComponent(query[1]));
-    } catch (e) {
-      console.log('Incorrect url format');
-    }
-  }
-  if (localStorage.schedHistory) {
-    return JSON.parse(localStorage.schedHistory);
-  }
-  return [];
-}

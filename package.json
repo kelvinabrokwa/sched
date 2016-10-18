@@ -25,7 +25,8 @@
   "homepage": "https://github.com/kelvinabrokwa/sched#readme",
   "dependencies": {
     "react-redux": "^4.4.5",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "url-search-params": "^0.6.1"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.2",

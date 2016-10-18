@@ -2,8 +2,10 @@ import {
   ADD_COURSE,
   REMOVE_COURSE,
   REMOVE_SECTION,
-  TOGGLE_SECTION
+  TOGGLE_SECTION,
+  SELECT_SEMESTER
 } from './actions';
+import { loadCoursesFromHistory } from './history';
 
 function schedApp(state, action) {
   switch (action.type) {
@@ -27,7 +29,6 @@ function schedApp(state, action) {
         .filterNot(course =>
           course.get('dept') === action.dept && course.get('level') === action.level)
       );
-
       return state.set('selectedCourse', Immutable.Map());
 
     case REMOVE_SECTION:
@@ -52,6 +53,14 @@ function schedApp(state, action) {
       }
       return state.setIn(['courses', courseIdx], course);
     }
+
+    case SELECT_SEMESTER:
+      state = state.set('courses', Immutable.fromJS(loadCoursesFromHistory(action.semester).map(c => ({
+        dept: c[0],
+        level: c[1],
+        sections: c[2]
+      }))));
+      return state.set('semester', action.semester);
 
     default:
       return state;

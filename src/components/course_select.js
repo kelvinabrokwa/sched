@@ -11,7 +11,6 @@ class CourseSelect extends React.Component {
     this.onSemesterSelect = this.onSemesterSelect.bind(this);
     this.onDeptSelect = this.onDeptSelect.bind(this);
     this.onLevelSelect = this.onLevelSelect.bind(this);
-    this.addCourse = this.addCourse.bind(this);
   }
 
   onSemesterSelect(e) {
@@ -26,16 +25,13 @@ class CourseSelect extends React.Component {
   }
 
   onLevelSelect(e) {
-    this.setState({ level: e.target.value });
-  }
-
-  addCourse() {
-    this.props.addCourse(this.state.dept, this.state.level);
+    if (e.target.value)
+      this.props.addCourse(this.state.dept, e.target.value);
   }
 
   render() {
     const { data, semester } = this.props;
-    const { dept, level } = this.state;
+    const { dept } = this.state;
 
     // departments
     const depts = data.get(semester).keySeq().sort();
@@ -61,6 +57,7 @@ class CourseSelect extends React.Component {
 
       {levels && <div>
         <select onChange={this.onLevelSelect}>
+          <option></option>
           {levels.map(level_ => <option
             key={level_.get('level')}
             value={level_.get('level')}
@@ -68,10 +65,6 @@ class CourseSelect extends React.Component {
             {level_.get('level')} - {level_.get('courseName')}
           </option>)}
         </select>
-      </div>}
-
-      {(dept && level) && <div>
-        <button onClick={this.addCourse}>add course</button>
       </div>}
 
     </div>);

@@ -72,10 +72,12 @@ class CourseSelect extends React.Component {
 
 }
 
+/*
 CourseSelect.propTypes = {
   data: React.PropTypes.object,
   addCourse: React.PropTypes.func,
   semester: React.PropTypes.string
 };
+*/
 
 export default CourseSelect;

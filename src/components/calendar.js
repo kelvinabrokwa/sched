@@ -183,8 +183,10 @@ class Calendar extends React.Component {
 
 }
 
+/*
 Calendar.propTypes = {
   removeSection: React.PropTypes.func
 };
+*/
 
 export default Calendar;

@@ -4,10 +4,12 @@ const SemesterSelect = ({ semester, data, selectSemester }) => (<div>
   </select>
 </div>);
 
+/*
 SemesterSelect.propTypes = {
   semester: React.PropTypes.string,
   data: React.PropTypes.object,
   selectSemester: React.PropTypes.func
 };
+*/
 
 export default SemesterSelect;

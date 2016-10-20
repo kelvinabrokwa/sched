@@ -7,8 +7,10 @@ const Share = ({ queryString }) => (<div>
   </div>
 </div>);
 
+/*
 Share.propTypes = {
   queryString: React.PropTypes.string
 };
+*/
 
 export default Share;

@@ -1,6 +1,6 @@
 html, body {
   font-family: avenir;
-  background-image: url('geometry2.png');
+  background-image: url('geometry.png');
 }
 .item { stroke: #000; }
 .line { stroke-width: 1; stroke: gray; }
@@ -13,7 +13,10 @@ html, body {
 .container { width: 85%; margin: 0 auto; }
 .pad2 { padding: 20px; }
 .mb2 { margin-bottom: 20px; }
+.mr2 { margin-right: 20px; }
+.ml2 { margin-left: 20px; }
 .sm { font-size: 10px; }
+.mt3 { margin-top: 30px; }
 .anchor-middle { text-anchor: middle; }
 .underline { text-decoration: underline; }
 .clickable { cursor: pointer; }

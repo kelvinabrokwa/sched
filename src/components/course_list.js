@@ -1,5 +1,5 @@
 const CourseList = ({ semester, courses, data, onSectionToggle, removeCourse }) => (<div>
-  {courses.map((course, i) => <div key={i} className='border-black top-right-container'>
+  {courses.map((course, i) => <div key={i} className='border-black top-right-container mb2'>
     <div
       onClick={removeCourse.bind(this, course.get('dept'), course.get('level'))}
       className='clickable hover-red top-right'

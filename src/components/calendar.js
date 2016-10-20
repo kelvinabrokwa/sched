@@ -36,6 +36,16 @@ class Calendar extends React.Component {
         .attr('y2', h => h * 40)
         .attr('class', 'line');
 
+    // grid shading
+    this.gridArea.append('g').selectAll('rect')
+      .data(d3.range(0, 8))
+      .enter().append('rect')
+        .attr('x', 0)
+        .attr('y', h => h * 80)
+        .attr('width', calWidth)
+        .attr('height', 40)
+        .style('opacity', 0.05);
+
     // day axis
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
     this.svg.append('g').selectAll('text')

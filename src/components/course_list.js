@@ -1,5 +1,7 @@
+import { toColor } from '../utils';
+
 const CourseList = ({ semester, courses, data, onSectionToggle, removeCourse }) => (<div>
-  {courses.map((course, i) => <div key={i} className='border-black top-right-container mb2'>
+  {courses.map((course, i) => <div key={i} className='border-black border-rounded top-right-container mb2' style={{ 'background-color': toColor(course.get('dept')) }}>
     <div
       onClick={removeCourse.bind(this, course.get('dept'), course.get('level'))}
       className='clickable hover-red top-right'

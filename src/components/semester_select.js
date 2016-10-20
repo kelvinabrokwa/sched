@@ -1,7 +1,12 @@
 const SemesterSelect = ({ semester, data, selectSemester }) => (<div>
-  Semester: <select onChange={selectSemester} value={semester}>
-    {data.keySeq().map((s, i) => <option key={i}>{s}</option>)}
-  </select>
+  <div>
+    select semester:
+  </div>
+  <div>
+    <select onChange={selectSemester} value={semester}>
+      {data.keySeq().map((s, i) => <option key={i}>{s}</option>)}
+    </select>
+  </div>
 </div>);
 
 /*

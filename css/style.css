@@ -1,7 +1,11 @@
 html, body {
+  margin: 0;
+  padding: 0;
   font-family: avenir;
-  background-image: url('geometry.png');
 }
+.bg-black { background-color: #000; }
+.big { font-size: 5em; }
+.sm { font-size: 10px; }
 .item { stroke: #000; }
 .line { stroke-width: 1; stroke: gray; }
 .flex { display: flex; flex-wrap: wrap; }
@@ -9,13 +13,14 @@ html, body {
 .top-right-container { position: relative; }
 .top-right { position: absolute; top: 10px; right: 10px; }
 .border-black { border: 1px solid #000; }
+.border-rounded { border-radius: 10px; }
 .full-width { width: 100%; }
 .container { width: 85%; margin: 0 auto; }
 .pad2 { padding: 20px; }
 .mb2 { margin-bottom: 20px; }
+.mb4 { margin-bottom: 30px; }
 .mr2 { margin-right: 20px; }
 .ml2 { margin-left: 20px; }
-.sm { font-size: 10px; }
 .mt3 { margin-top: 30px; }
 .anchor-middle { text-anchor: middle; }
 .underline { text-decoration: underline; }
@@ -25,7 +30,7 @@ html, body {
 /**
  * color changing text
  */
-.funk {
+.funky {
   -webkit-animation: color-change 4s infinite;
   -moz-animation: color-change 4s infinite;
   -o-animation: color-change 4s infinite;
@@ -53,12 +58,7 @@ html, body {
     100% { color: green; }
 }
 @keyframes color-change {
-    0% { color: red; }
-    15% { color: orange; }
-    30% { color: gold; }
-    45% { color: green; }
-    60% { color: blue; }
-    75% { color: indigo; }
-    90% { color: violet; }
-    100% { color: red; }
+    0% { color: green; }
+    50% { color: gold; }
+    100% { color: green; }
 }

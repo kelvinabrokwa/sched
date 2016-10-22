@@ -4,9 +4,9 @@ import ShareContainer from './containers/share_container';
 import CourseSelectContainer from './containers/course_select_container';
 import SemesterSelectContainer from './containers/semester_select_container';
 
-const App = () => (<div className='flex'>
-  <div className='bg-black pad2'>
-    <div className='big funky'>sched</div>
+const App = () => (<div>
+  <div className='bg-black center'>
+    <div className='med funky'>sched</div>
   </div>
   <div className='pad2'>
     <div className='mb4'>

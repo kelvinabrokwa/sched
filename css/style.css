@@ -3,8 +3,9 @@ html, body {
   padding: 0;
   font-family: avenir;
 }
+.center { text-align: center; }
 .bg-black { background-color: #000; }
-.big { font-size: 5em; }
+.med { font-size: 4em; }
 .sm { font-size: 10px; }
 .item { stroke: #000; }
 .line { stroke-width: 1; stroke: gray; }

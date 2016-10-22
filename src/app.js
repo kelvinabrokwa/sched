@@ -8,7 +8,7 @@ const App = () => (<div>
   <div className='bg-black center'>
     <div className='med funky'>sched</div>
   </div>
-  <div className='pad2'>
+  <div className='pad2 body-margin-left'>
     <div className='mb4'>
       <SemesterSelectContainer />
     </div>

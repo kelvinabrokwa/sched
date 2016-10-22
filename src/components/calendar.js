@@ -120,8 +120,11 @@ class Calendar extends React.Component {
         if (c.other_meetings)
           for (let i = 0; i < c.other_meetings.length; i++)
             for (let j = 0; j < c.other_meetings[i]['MEET DAYS'].length; j++)
-              p.push(Object.assign({}, c.other_meetings[i], { meetDay: c.other_meetings[i]['MEET DAYS'][j] }));
-
+              p.push(Object.assign(
+                {},
+                c.other_meetings[i],
+                { meetDay: c.other_meetings[i]['MEET DAYS'][j] }
+              ));
         return p;
       }, []);
 

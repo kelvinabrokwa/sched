@@ -3,7 +3,10 @@ import Calendar from '../components/calendar.js';
 import { removeSection } from '../actions';
 
 const mapStateToProps = state => {
+  // the courses props is an array of arrays
+  // each array has [dept, level, section]
   const courses = state.get('courses')
+    // filter out courses with no meet times
     .filter(course =>
       course.get('sections').size > 0 &&
       state.getIn([
@@ -12,7 +15,7 @@ const mapStateToProps = state => {
         course.get('dept'),
         course.get('level'),
         course.getIn(['sections', 0]),
-        'startTime'
+        'meetings'
       ])
     )
     .reduce((list, course) => {

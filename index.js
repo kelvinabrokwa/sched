@@ -3,6 +3,7 @@
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import App from './src/app';
+import Loading from './src/loading';
 import schedApp from './src/reducers';
 import { parseURLOrHistory } from './src/history';
 
@@ -21,9 +22,17 @@ import { parseURLOrHistory } from './src/history';
  * }
  */
 
-fetch('https://wm-course-data.herokuapp.com/courses')
- .then(d => d.json())
- .then(data => initializeApp(data));
+ReactDOM.render(
+  <Loading/>,
+  document.getElementById('app')
+);
+
+if (window.Worker) {
+  var dataFetchWorker = new Worker('data_fetch_worker.js');
+  dataFetchWorker.onmessage = e => {
+    initializeApp(e.data);
+  }
+}
 
 const initializeApp = data => {
   const history = parseURLOrHistory();

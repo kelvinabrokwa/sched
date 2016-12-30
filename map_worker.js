@@ -5,11 +5,22 @@
 onmessage = e => {
   const { data } = e;
 
-  fetch(`https://wm-course-data.herokuapp.com/geocode/${201720}/${data.crn}`)
-    .then(res => res.json())
-    .then(d => {
-      if (!d.err) {
+  if (self.fetch) {
+    fetch(`https://wm-course-data.herokuapp.com/geocode/${201720}/${data.crn}`)
+      .then(res => res.json())
+        .then(d => {
+          if (!d.err) {
+            postMessage(Object.assign(d, data));
+          }
+        });
+  } else {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', function() {
+      let d = JSON.parse(this.responseText);
+      if (!d.err)
         postMessage(Object.assign(d, data));
-      }
     });
+    xhr.open('GET', `https://wm-course-data.herokuapp.com/geocode/${201720}/${data.crn}`);
+    xhr.send();
+  }
 }

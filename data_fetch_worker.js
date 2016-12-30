@@ -11,7 +11,6 @@ if (self.fetch) {
 } else {
   const xhr = new XMLHttpRequest();
   xhr.addEventListener('load', function() {
-    console.log(this.responseText);
     postMessage(JSON.parse(this.responseText));
     close()
   });

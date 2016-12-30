@@ -6,20 +6,24 @@ import SemesterSelectContainer from './containers/semester_select_container';
 import MapContainer from './containers/map_container';
 
 const App = () => (<div className='mb4'>
+
   <MapContainer />
-  <div className='pad2 body-margin-left'>
+
+  <div className='pad2'>
     <div className='mb4'>
       <SemesterSelectContainer />
     </div>
+
     <div className='flex'>
-      <div className='mr2'>
+      <div className='mr2 mt2'>
+        <CalendarContainer />
+      </div>
+      <div className='flex1'>
         <CourseSelectContainer />
         <CourseListContainer />
       </div>
-      <div className='mt3'>
-        <CalendarContainer />
-      </div>
     </div>
+
     <ShareContainer />
   </div>
 </div>);

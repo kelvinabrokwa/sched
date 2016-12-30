@@ -1,43 +1,51 @@
 import { toColor } from '../utils';
 
-const CourseList = ({ semester, courses, data, onSectionToggle, removeCourse }) => (<div>
-  {courses.map((course, i) => <div key={i} className='border-black border-rounded top-right-container mb2 drop-shadow' style={{ backgroundColor: toColor(course.get('dept')) }}>
-    <div
-      onClick={removeCourse.bind(this, course.get('dept'), course.get('level'))}
-      className='clickable hover-red top-right'
-    >
-      x
-    </div>
-    <div className='pad2'>
-      <div>
-        {course.get('dept')} {course.get('level')}: {data.getIn([
-          semester,
-          course.get('dept'),
-          course.get('level')
-        ]).first().get('title')}
+const CourseList = ({ semester, courses, data, onSectionToggle, removeCourse }) => (<div className='masonry-container'>
+  <ul className='masonry-ul'>
+    {courses.map((course, i) => <li key={i}>
+      <div
+        className='border-black mb1 top-right-container full-width'
+        style={{display: 'inline-block' }}
+      >
+        <div
+          onClick={removeCourse.bind(this, course.get('dept'), course.get('level'))}
+          className='clickable hover-red top-right'
+        >
+          x
+        </div>
+        <div className='pad2'>
+          <div className='bold'>
+            {course.get('dept')} {course.get('level')}: {data.getIn([
+              semester,
+              course.get('dept'),
+              course.get('level')
+            ]).first().get('title')}
+          </div>
+          <div>
+            {data.getIn([
+              semester,
+              course.get('dept'),
+              course.get('level')
+            ]).toIndexedSeq().map((section, id) => <div key={id}>
+              <input
+                type='radio'
+                checked={course.get('sections').includes(section.get('section'))}
+                onChange={onSectionToggle.bind(
+                  this,
+                  section.get('department'),
+                  section.get('level'),
+                  section.get('section')
+                )}
+              />
+              {section.get('section')}: <a target='_blank' href={`http://www.ratemyprofessors.com/search.jsp?query=` +
+                `${section.get('INSTRUCTOR')}`}>{section.get('INSTRUCTOR')}</a>
+              {formatMeetings(section.get('meetings'))}
+            </div>)}
+          </div>
+        </div>
       </div>
-      <div>
-        {data.getIn([
-          semester,
-          course.get('dept'),
-          course.get('level')
-        ]).toIndexedSeq().map((section, id) => <div key={id}>
-          <input
-            type='radio'
-            checked={course.get('sections').includes(section.get('section'))}
-            onChange={onSectionToggle.bind(
-              this,
-              section.get('department'),
-              section.get('level'),
-              section.get('section')
-            )}
-          />
-          {section.get('section')}: <a target='_blank' href={`http://www.ratemyprofessors.com/search.jsp?query=${section.get('INSTRUCTOR')}`}>{section.get('INSTRUCTOR')}</a>
-          {formatMeetings(section.get('meetings'))}
-        </div>)}
-      </div>
-    </div>
-  </div>)}
+    </li>)}
+  </ul>
 </div>);
 
 function formatMeetings(meetings) {
@@ -57,8 +65,8 @@ function formatMeetings(meetings) {
   }
 
   return (<div>
-    <ul className='mt0'>
-    {Object.keys(m).map((t, i) => <li key={i}>{m[t].join(',')} | {t}</li>)}
+    <ul className='mt0 list'>
+      {Object.keys(m).map((t, i) => <li key={i}>{m[t].join(',')} | {t}</li>)}
     </ul>
   </div>);
 }

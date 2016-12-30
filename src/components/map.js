@@ -16,6 +16,8 @@ class Map extends React.Component {
       zoom: 15
     });
 
+    this.map.scrollZoom.disable();
+
     this.popup = new mapboxgl.Popup({
       closeButton: false,
       closeOnClick: false

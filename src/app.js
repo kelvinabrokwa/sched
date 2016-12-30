@@ -15,7 +15,7 @@ const App = () => (<div className='mb4'>
     </div>
 
     <div className='flex'>
-      <div className='mr2 mt2'>
+      <div className='mr2 mt2' style={{ overflowX: 'scroll' }}>
         <CalendarContainer />
       </div>
       <div className='flex1'>

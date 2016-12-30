@@ -1,7 +1,17 @@
-const Share = ({ queryString }) => (<div>
+const Share = ({ queryString }) => (<div className='pad2'>
   <div>
-    share your sched with the homies:
-    <input type='text' className='' style={{ width: `${((queryString.length + 20) * 6)}px` }} value={`http://abrokwa.org/sched/?${queryString}`} readOnly={true} />
+    <div>
+      share your sched with the homies:
+    </div>
+    <div>
+      <input
+        type='text'
+        className=''
+        style={{ width: '100%' }}
+        value={`http://abrokwa.org/sched/?${queryString}`}
+        readOnly={true}
+      />
+    </div>
   </div>
 </div>);
 

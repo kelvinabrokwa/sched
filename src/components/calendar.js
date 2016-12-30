@@ -1,4 +1,5 @@
-import { toColor, oclock } from '../utils';
+import { colors, oclock } from '../utils';
+
 
 class Calendar extends React.Component {
 
@@ -111,13 +112,15 @@ class Calendar extends React.Component {
 
     if (!Object.keys(data).length) return; // data hasn't loaded yet
 
+    // separate courses into individual meetings
     courses = courses.map(c => data[props.semester][c[0]][c[1]][c[2]])
-      .reduce((p, c) => {
+      .reduce((p, c, j) => {
         for (let i = 0; i < c.meetings.length; i++)
           p.push(Object.assign({}, c, {
             meetDay: c.meetings[i].day,
             startTime: c.meetings[i].time[0],
-            endTime: c.meetings[i].time[1]
+            endTime: c.meetings[i].time[1],
+            color: colors[j % colors.length]
           }));
         return p;
       }, []);
@@ -132,7 +135,7 @@ class Calendar extends React.Component {
         .attr('height', m => (m.endTime - m.startTime) * 0.000011)
         .attr('x', x)
         .attr('y', 0)
-        .attr('fill', c => toColor(`${c.dept}${c.level}${c.section}`))
+        .attr('fill', c => c.color)
       .transition()
         .duration(600)
         .attr('y', y);

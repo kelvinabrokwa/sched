@@ -10,7 +10,7 @@ const App = () => (<div className='mb4'>
   <MapContainer />
 
   <div className='pad2'>
-    <div className='mb4'>
+    <div className='pad2'>
       <SemesterSelectContainer />
     </div>
 

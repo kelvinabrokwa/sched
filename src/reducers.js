@@ -1,3 +1,6 @@
+/**
+ * Reducers
+ */
 import {
   EDIT_MAP,
   ADD_COURSE,

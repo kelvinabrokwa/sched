@@ -4,7 +4,7 @@ const CourseList = ({ semester, courses, data, onSectionToggle, removeCourse }) 
   <ul className='masonry-ul'>
     {courses.map((course, i) => <li key={i}>
       <div
-        className='border-black mb1 top-right-container full-width'
+        className='border-blue mb1 top-right-container full-width'
         style={{display: 'inline-block' }}
       >
         <div

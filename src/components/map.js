@@ -17,6 +17,7 @@ class Map extends React.Component {
     });
 
     this.map.scrollZoom.disable();
+    this.map.doubleClickZoom.disable();
 
     this.popup = new mapboxgl.Popup({
       closeButton: false,
@@ -35,7 +36,7 @@ class Map extends React.Component {
         source: 'buildings',
         paint: {
             'circle-radius': 8,
-            'circle-color': '#f90000'
+            'circle-color': '#fd7f7f'
         },
       });
 
@@ -74,7 +75,7 @@ class Map extends React.Component {
   }
 
   render() {
-    return (<div style={{height: '300px'}}>
+    return (<div style={{height: '300px'}} className='border-bottom-blue'>
       <div ref='map' style={{position: 'absolute', width: '100%', height: '300px'}}></div>
     </div>);
   }

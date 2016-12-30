@@ -28,6 +28,7 @@ const mapStateToProps = state => {
       }
       return list;
     }, Immutable.List());
+
   return {
     courses: courses.toJS(),
     data: state.get('data').toJS(),

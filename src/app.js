@@ -3,11 +3,10 @@ import CalendarContainer from './containers/calendar_container';
 import ShareContainer from './containers/share_container';
 import CourseSelectContainer from './containers/course_select_container';
 import SemesterSelectContainer from './containers/semester_select_container';
+import MapContainer from './containers/map_container';
 
-const App = () => (<div>
-  <div className='bg-black center'>
-    <div className='med funky'>sched</div>
-  </div>
+const App = () => (<div className='mb4'>
+  <MapContainer />
   <div className='pad2 body-margin-left'>
     <div className='mb4'>
       <SemesterSelectContainer />

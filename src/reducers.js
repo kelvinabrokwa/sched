@@ -1,4 +1,5 @@
 import {
+  EDIT_MAP,
   ADD_COURSE,
   REMOVE_COURSE,
   REMOVE_SECTION,
@@ -50,6 +51,24 @@ function schedApp(state, action) {
         );
       } else {
         course = course.updateIn(['sections'], Immutable.List(), list => list.push(action.section));
+
+        // geocode this section in the map worker
+        const crn = state.getIn([
+          'data',
+          state.get('semester'),
+          course.get('dept'),
+          course.get('level'),
+          action.section,
+          'CRN'
+        ]);
+
+        window.mapWorker.postMessage({
+          semester: state.get('semester'),
+          dept: course.get('dept'),
+          level: course.get('level'),
+          section: action.section,
+          crn
+        });
       }
       return state.setIn(['courses', courseIdx], course);
     }
@@ -61,6 +80,18 @@ function schedApp(state, action) {
         sections: c[2]
       }))));
       return state.set('semester', action.semester);
+
+    case EDIT_MAP:
+      if (!state.get('map').has(action.data.building)) {
+        state = state.setIn(['map', action.data.building], Immutable.List());
+      }
+      return state.setIn(['map', action.data.building], state.getIn(['map', action.data.building]).push(Immutable.Map({
+        building: action.data.building,
+        dept: action.data.dept,
+        level: action.data.level,
+        section: action.data.section,
+        coords: action.data.coords
+      })));
 
     default:
       return state;

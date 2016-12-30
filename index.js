@@ -1,11 +1,12 @@
-// import React from 'react'; // TODO: remove in prod
-// import ReactDOM from 'react-dom'; // TODO: remove in prod
+//import React from 'react'; // TODO: remove in prod
+//import ReactDOM from 'react-dom'; // TODO: remove in prod
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import App from './src/app';
 import Loading from './src/loading';
 import schedApp from './src/reducers';
 import { parseURLOrHistory } from './src/history';
+import { editMap } from './src/actions';
 
 /**
  * Store format:
@@ -32,6 +33,7 @@ if (window.Worker) {
   dataFetchWorker.onmessage = e => {
     initializeApp(e.data);
   }
+  window.mapWorker = new Worker('map_worker.js')
 }
 
 const initializeApp = data => {
@@ -52,7 +54,8 @@ const initializeApp = data => {
         sections: Immutable.List(course[2])
       }))),
     data: Immutable.fromJS(data),
-    semester,
+    map: Immutable.Map({}),
+    semester
   }));
 
   ReactDOM.render(
@@ -61,5 +64,21 @@ const initializeApp = data => {
     </Provider>,
     document.getElementById('app')
   );
+
+  if (window.Worker) {
+    window.mapWorker.onmessage = e => {
+      store.dispatch(editMap(e.data));
+    };
+
+    for (let i = 0; i < schedule.length; i++) {
+      for (let j = 0; j < schedule[i][2].length; j++) {
+        const dept = schedule[i][0];
+        const level = schedule[i][1];
+        const section = schedule[i][2][j];
+        const crn = data[semester][dept][level][section]['CRN'];
+        window.mapWorker.postMessage({ semester, dept, level, section, crn });
+      }
+    }
+  }
 };
 

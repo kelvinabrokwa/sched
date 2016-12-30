@@ -4,6 +4,7 @@ export const ADD_SECTION = 'ADD_SECTION';
 export const REMOVE_SECTION = 'REMOVE_SECTION';
 export const TOGGLE_SECTION = 'TOGGLE_SECTION';
 export const SELECT_SEMESTER = 'SELECT_SEMESTER';
+export const EDIT_MAP = 'EDIT_MAP';
 
 export function addCourse(dept, level) {
   return { type: ADD_COURSE, dept, level };
@@ -26,4 +27,8 @@ export function toggleSection(dept, level, section) {
 
 export function selectSemester(semester) {
   return { type: SELECT_SEMESTER, semester };
+}
+
+export function editMap(data) {
+  return { type: EDIT_MAP, data };
 }

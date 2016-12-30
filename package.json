@@ -41,6 +41,7 @@
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-react": "^4.3.0",
     "garnish": "^5.2.0",
+    "mapbox-gl": "^0.29.0",
     "minifyify": "^7.3.3",
     "moment": "^2.14.1",
     "react": "^15.3.2"

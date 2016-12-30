@@ -4,6 +4,8 @@ html, body {
   font-family: avenir;
 }
 
+div { display: block; }
+
 @media (min-width: 1200px) {
     .body-margin-left { margin-left: 100px; }
 }

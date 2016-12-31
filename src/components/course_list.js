@@ -26,17 +26,16 @@ const CourseList = ({ semester, courses, data, onSectionToggle, removeCourse }) 
               semester,
               course.get('dept'),
               course.get('level')
-            ]).toIndexedSeq().map((section, id) => <div key={id}>
-              <input
-                type='radio'
-                checked={course.get('sections').includes(section.get('section'))}
-                onChange={onSectionToggle.bind(
-                  this,
-                  section.get('department'),
-                  section.get('level'),
-                  section.get('section')
-                )}
-              />
+            ]).toIndexedSeq().map((section, id) => <div
+              key={id}
+              className={`hover-bg-blue pad1 clickable border-blue ${course.get('sections').includes(section.get('section')) && 'bg-blue'}`}
+              onClick={onSectionToggle.bind(
+                this,
+                section.get('department'),
+                section.get('level'),
+                section.get('section')
+              )}
+            >
               {section.get('section')}: <a target='_blank' href={`http://www.ratemyprofessors.com/search.jsp?query=` +
                 `${section.get('INSTRUCTOR')}`}>{section.get('INSTRUCTOR')}</a>
               {formatMeetings(section.get('meetings'))}

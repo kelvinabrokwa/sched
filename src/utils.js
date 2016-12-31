@@ -1,7 +1,9 @@
-// credit to Mapbox
-// via: https://github.com/mapbox/to-color
-export const colors = ['#fd7f7f', '	#adff8c', '#ffc379', '#71c1fd', '#f7ff78'];
+/**
+ * Utils
+ */
 
+// http://www.color-hex.com/color-palette/28445
+export const colors = ['#fd7f7f', '#adff8c', '#ffc379', '#71c1fd', '#f7ff78'];
 
 export function oclock(time) {
   if (time === 0) {

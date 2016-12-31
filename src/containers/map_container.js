@@ -3,7 +3,12 @@ import Map from '../components/map';
 import { editMap } from '../actions';
 
 const mapStateToProps = state => {
-  return { buildings: state.get('map').toJS() };
+  return {
+    semester: state.get('semester'),
+    courses: state.get('courses').toJS(),
+    data: state.get('data'),
+    buildings: state.get('map').toJS() // building coordinates
+  };
 };
 
 const mapDispatchToProps = dispatch => ({});

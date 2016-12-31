@@ -47,32 +47,46 @@ function schedApp(state, action) {
     case TOGGLE_SECTION: {
       const courseIdx = state.get('courses')
         .findIndex(c => c.get('dept') === action.dept && c.get('level') === action.level);
+
       let course = state.getIn(['courses', courseIdx]);
+
       if (course.get('sections').find(section => section === action.section)) {
+        // if its already in there, remove it
         course = course.updateIn(['sections'], Immutable.List(), list => list
           .filterNot(section => section === action.section)
         );
       } else {
+        // else, add it
         course = course.updateIn(['sections'], Immutable.List(), list => list.push(action.section));
 
-        // geocode this section in the map worker
-        const crn = state.getIn([
+        if (!state.getIn([
           'data',
           state.get('semester'),
           course.get('dept'),
           course.get('level'),
-          action.section,
-          'CRN'
-        ]);
+          action.section
+        ]).has('building')) {
+          // if we haven't geocoded this section before,
+          // geocode it in the map worker
+          const crn = state.getIn([
+            'data',
+            state.get('semester'),
+            course.get('dept'),
+            course.get('level'),
+            action.section,
+            'CRN'
+          ]);
 
-        window.mapWorker.postMessage({
-          semester: state.get('semester'),
-          dept: course.get('dept'),
-          level: course.get('level'),
-          section: action.section,
-          crn
-        });
+          window.mapWorker.postMessage({
+            semester: state.get('semester'),
+            dept: course.get('dept'),
+            level: course.get('level'),
+            section: action.section,
+            crn
+          });
+        }
       }
+
       return state.setIn(['courses', courseIdx], course);
     }
 
@@ -85,16 +99,17 @@ function schedApp(state, action) {
       return state.set('semester', action.semester);
 
     case EDIT_MAP:
-      if (!state.get('map').has(action.data.building)) {
-        state = state.setIn(['map', action.data.building], Immutable.List());
+      let d = action.data;
+
+      // set building property of section
+      state = state.setIn(['data', state.get('semester'), d.dept, d.level, d.section, 'building'], d.building);
+
+      // set coordinates of building in map data
+      if (!state.get('map').has(d.building)) {
+        state = state.setIn(['map', d.building], Immutable.Map(d.coords));
       }
-      return state.setIn(['map', action.data.building], state.getIn(['map', action.data.building]).push(Immutable.Map({
-        building: action.data.building,
-        dept: action.data.dept,
-        level: action.data.level,
-        section: action.data.section,
-        coords: action.data.coords
-      })));
+
+      return state
 
     default:
       return state;

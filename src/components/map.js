@@ -27,7 +27,7 @@ class Map extends React.Component {
     this.map.on('load', () => {
       this.map.addSource('buildings', {
         type: 'geojson',
-        data: data2geoj(this.props.buildings)
+        data: props2geoj(this.props)
       });
 
       this.map.addLayer({
@@ -50,12 +50,12 @@ class Map extends React.Component {
         const feature = features[0];
 
         // FIXME
-        feature.properties.courses = JSON.parse(feature.properties.courses);
+        feature.properties.sections = JSON.parse(feature.properties.sections);
 
         let div = `<div style='font-weight: bold'>${feature.properties.building}</div><div>`;
 
-        for (let i = 0; i < feature.properties.courses.length; i++) {
-          let c = feature.properties.courses[i];
+        for (let i = 0; i < feature.properties.sections.length; i++) {
+          let c = feature.properties.sections[i];
           div += `<div>${c.dept} ${c.level} - ${c.section}</div>`;
         }
 
@@ -70,7 +70,7 @@ class Map extends React.Component {
 
   componentWillReceiveProps(props) {
     if (this.map.loaded()) {
-      this.map.getSource('buildings').setData(data2geoj(props.buildings));
+      this.map.getSource('buildings').setData(props2geoj(props));
     }
   }
 
@@ -84,25 +84,49 @@ class Map extends React.Component {
 
 export default Map;
 
-const data2geoj = data => {
-  const features = [];
+function props2geoj(p) {
+  const buildings = {};
 
-  for (let building in data) {
-    features.push({
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [data[building][0].coords.lng, data[building][0].coords.lat]
-      },
-      properties: {
-        building,
-        courses: data[building]
+  for (let i = 0; i < p.courses.length; i++) {
+    let c = p.courses[i];
+    for (let j = 0; j < c.sections.length; j++) {
+      let building = p.data.getIn([p.semester, c.dept, c.level, c.sections[j],'building']);
+
+      if (!building) {
+        // this section is still being geocoded by the worker
+        // skip mapping it
+        continue;
       }
-    });
+
+      if (!(building in buildings)) {
+        buildings[building] = {
+          sections: [],
+          coords: p.buildings[building].coords
+        };
+      }
+
+      buildings[building].sections.push({
+        dept: c.dept,
+        level: c.level,
+        section: c.sections[j]
+      });
+    }
   }
 
   return {
     type: 'FeatureCollection',
-    features
+    features: Object.keys(buildings)
+      .map(b => ({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [p.buildings[b].lng, p.buildings[b].lat]
+        },
+        properties: {
+          building: b,
+          sections: buildings[b].sections
+        }
+      }))
   };
 }
+

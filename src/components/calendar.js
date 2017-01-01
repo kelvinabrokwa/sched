@@ -110,10 +110,8 @@ class Calendar extends React.Component {
     const { data } = props;
     let { courses } = props;
 
-    if (!Object.keys(data).length) return; // data hasn't loaded yet
-
     // separate courses into individual meetings
-    courses = courses.map(c => data[props.semester][c[0]][c[1]][c[2]])
+    courses = courses.map(c => data.getIn([props.semester, c.get(0), c.get(1), c.get(2)]).toJS())
       .reduce((p, c, j) => {
         for (let i = 0; i < c.meetings.length; i++)
           p.push(Object.assign({}, c, {

@@ -87,10 +87,10 @@ export default Map;
 function props2geoj(p) {
   const buildings = {};
 
-  for (let i = 0; i < p.courses.length; i++) {
-    let c = p.courses[i];
-    for (let j = 0; j < c.sections.length; j++) {
-      let building = p.data.getIn([p.semester, c.dept, c.level, c.sections[j],'building']);
+  for (let i = 0; i < p.courses.size; i++) {
+    let c = p.courses.get(i);
+    for (let j = 0; j < c.get('sections').size; j++) {
+      let building = p.data.getIn([p.semester, c.get('dept'), c.get('level'), c.getIn(['sections', j]), 'building']);
 
       if (!building) {
         // this section is still being geocoded by the worker
@@ -101,14 +101,14 @@ function props2geoj(p) {
       if (!(building in buildings)) {
         buildings[building] = {
           sections: [],
-          coords: p.buildings[building].coords
+          coords: p.buildings.getIn([building, 'coords'])
         };
       }
 
       buildings[building].sections.push({
-        dept: c.dept,
-        level: c.level,
-        section: c.sections[j]
+        dept: c.get('dept'),
+        level: c.get('level'),
+        section: c.getIn(['sections', j])
       });
     }
   }
@@ -120,7 +120,7 @@ function props2geoj(p) {
         type: 'Feature',
         geometry: {
           type: 'Point',
-          coordinates: [p.buildings[b].lng, p.buildings[b].lat]
+          coordinates: [p.buildings.getIn([b, 'lng']), p.buildings.getIn([b, 'lat'])]
         },
         properties: {
           building: b,

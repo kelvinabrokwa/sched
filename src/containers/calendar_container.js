@@ -30,8 +30,8 @@ const mapStateToProps = state => {
     }, Immutable.List());
 
   return {
-    courses: courses.toJS(),
-    data: state.get('data').toJS(),
+    courses,
+    data: state.get('data'),
     semester: state.get('semester')
   };
 };

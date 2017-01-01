@@ -28,12 +28,14 @@ function schedApp(state, action) {
         }))
       );
 
+
     case REMOVE_COURSE:
       state = state.updateIn(['courses'], Immutable.List(), list => list
         .filterNot(course =>
           course.get('dept') === action.dept && course.get('level') === action.level)
       );
       return state.set('selectedCourse', Immutable.Map());
+
 
     case REMOVE_SECTION:
       const courseIdx = state.get('courses')
@@ -43,6 +45,7 @@ function schedApp(state, action) {
         .filterNot(section => section === action.section)
       );
       return state.setIn(['courses', courseIdx], course);
+
 
     case TOGGLE_SECTION: {
       const courseIdx = state.get('courses')
@@ -90,6 +93,7 @@ function schedApp(state, action) {
       return state.setIn(['courses', courseIdx], course);
     }
 
+
     case SELECT_SEMESTER:
       state = state.set('courses', Immutable.fromJS(loadCoursesFromHistory(action.semester).map(c => ({
         dept: c[0],
@@ -97,6 +101,7 @@ function schedApp(state, action) {
         sections: c[2]
       }))));
       return state.set('semester', action.semester);
+
 
     case EDIT_MAP:
       let d = action.data;
@@ -110,6 +115,7 @@ function schedApp(state, action) {
       }
 
       return state
+
 
     default:
       return state;

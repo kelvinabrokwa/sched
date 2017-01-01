@@ -1,3 +1,5 @@
+// map_container.js
+
 import { connect } from 'react-redux';
 import Map from '../components/map';
 import { editMap } from '../actions';
@@ -5,9 +7,9 @@ import { editMap } from '../actions';
 const mapStateToProps = state => {
   return {
     semester: state.get('semester'),
-    courses: state.get('courses').toJS(),
+    courses: state.get('courses'),
     data: state.get('data'),
-    buildings: state.get('map').toJS() // building coordinates
+    buildings: state.get('map')
   };
 };
 

@@ -3,11 +3,11 @@ import Share from '../components/share';
 
 const mapStateToProps = state => {
   const courses = state.get('courses')
-    .map(course => Immutable.List([
+    .map(course => [
       course.get('dept'),
       course.get('level'),
       course.get('sections')
-    ])).toJS();
+    ]);
 
   const semester = state.get('semester');
 

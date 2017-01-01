@@ -19,7 +19,8 @@ import { editMap } from './src/actions';
  *     }
  *   ],
  *   data: {},
- *   semester: <String>
+ *   semester: <String>,
+ *   map: {}
  * }
  */
 

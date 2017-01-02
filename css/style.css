@@ -6,13 +6,8 @@ html, body, input, select {
 
 div { display: block; }
 
-.pl3 { padding-left: 30px; }
-.drop-shadow { box-shadow: 1px 1px 15px #888888; }
-.drop-shadow:hover { box-shadow: 5px 5px 10px #888888; }
 .bold { font-weight: bold; }
 .center { text-align: center; }
-.bg-black { background-color: #000; }
-.med { font-size: 4em; }
 .sm { font-size: 10px; }
 .item { stroke: #000; }
 .line { stroke-width: 1; stroke: gray; }
@@ -20,30 +15,21 @@ div { display: block; }
 .flex1 { flex: 1; }
 .top-right-container { position: relative; }
 .top-right { position: absolute; top: 10px; right: 10px; }
-.border-black { border: 1px solid #000; }
 .border-blue { border: 1px solid #71c1fd; }
-.hover-border-blue:hover { border: 1px solid #71c1fd; }
 .hover-bg-blue:hover { background-color: rgba(113,193,253,0.5); }
-.bg-blue { background-color: #71c1fd; }
 .border-bottom-blue { border-bottom: 1px solid #71c1fd; }
-.border-rounded { border-radius: 10px; }
 .full-width { width: 100%; }
-.container { width: 85%; margin: 0 auto; }
 .pad1 { padding: 10px; }
 .pad2 { padding: 20px; }
 .mb1 { margin-bottom: 10px; }
 .mb2 { margin-bottom: 20px; }
 .mb4 { margin-bottom: 30px; }
 .mr2 { margin-right: 20px; }
-.ml2 { margin-left: 20px; }
 .mt0 { margin-top: 0px; }
-.mt1 { margin-top: 10px; }
 .mt2 { margin-top: 20px; }
 .anchor-middle { text-anchor: middle; }
-.underline { text-decoration: underline; }
 .clickable { cursor: pointer; }
 .hover-red:hover { color: red; }
-input[type=radio] { margin-right: 1em; }
 .list > li { list-style: none; }
 .list > li:before { content: '– '; margin-left: -20px; }
 

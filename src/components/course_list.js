@@ -1,4 +1,5 @@
 import { toColor } from '../utils';
+import Immutable from 'immutable';
 
 const CourseList = ({ semester, courses, data, onSectionToggle, removeCourse }) => (<div className='masonry-container'>
   <ul className='masonry-ul'>
@@ -28,7 +29,11 @@ const CourseList = ({ semester, courses, data, onSectionToggle, removeCourse }) 
               course.get('level')
             ]).toIndexedSeq().map((section, id) => <div
               key={id}
-              className={`hover-bg-blue pad1 clickable border-blue ${course.get('sections').includes(section.get('section')) && 'bg-blue'}`}
+              className={`hover-bg-blue pad1 clickable border-blue`}
+              style={{
+                // damn u sketchy...come on dude
+                backgroundColor: course.get('sections').find(s => s.get('number') === section.get('section'), null, Immutable.Map({ color: '#fff' })).get('color')
+              }}
               onClick={onSectionToggle.bind(
                 this,
                 section.get('department'),

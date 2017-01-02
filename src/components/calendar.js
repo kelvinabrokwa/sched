@@ -108,24 +108,28 @@ class Calendar extends React.Component {
   update(props) {
     const { x, y, rectWidth } = this;
     const { data } = props;
-    let { courses } = props;
+    let { sections } = props;
 
-    // separate courses into individual meetings
-    courses = courses.map(c => data.getIn([props.semester, c.get(0), c.get(1), c.get(2)]).toJS())
+    // separate sections into individual meetings
+    sections = sections
+      .map(c => ({
+        data: data.getIn([props.semester, c.dept, c.level, c.section.get('number')]).toJS(),
+        color: c.section.get('color')
+      }))
       .reduce((p, c, j) => {
-        for (let i = 0; i < c.meetings.length; i++)
-          p.push(Object.assign({}, c, {
-            meetDay: c.meetings[i].day,
-            startTime: c.meetings[i].time[0],
-            endTime: c.meetings[i].time[1],
-            color: colors[j % colors.length]
+        for (let i = 0; i < c.data.meetings.length; i++)
+          p.push(Object.assign({}, c.data, {
+            meetDay: c.data.meetings[i].day,
+            startTime: c.data.meetings[i].time[0],
+            endTime: c.data.meetings[i].time[1],
+            color: c.color
           }));
         return p;
       }, []);
 
     // meetings
     const meetings = this.rects.selectAll('.item.meetings')
-      .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
+      .data(sections, s => `${s.dept}${s.level}${s.section}${s.meetDay}`);
 
     meetings.enter().append('rect')
         .attr('width', rectWidth)
@@ -148,7 +152,7 @@ class Calendar extends React.Component {
 
     // labels
     const labels = this.rects.selectAll('.meetings.labels')
-      .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
+      .data(sections, s => `${s.dept}${s.level}${s.section}${s.meetDay}`);
 
     labels.enter().append('text')
         .attr('x', m => x(m) + rectWidth / 2)
@@ -168,14 +172,14 @@ class Calendar extends React.Component {
 
     // x button
     const deleteButtons = this.rects.selectAll('.meetings.deleteButton')
-      .data(courses, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
+      .data(sections, c => `${c.dept}${c.level}${c.section}${c.meetDay}`);
 
     deleteButtons.enter().append('text')
       .attr('x', d => x(d) + rectWidth - 10)
       .attr('y', 0)
       .text('x')
         .attr('class', 'meetings sm deleteButton clickable')
-        .on('click', d => { this.props.removeSection(d.department, d.level, d.section); })
+        .on('click', d => this.props.toggleSection(d.department, d.level, d.section))
       .transition()
         .duration(600)
         .attr('y', d => y(d) + 10);
@@ -193,7 +197,7 @@ class Calendar extends React.Component {
 
 /*
 Calendar.propTypes = {
-  removeSection: React.PropTypes.func
+  toggleSection: React.PropTypes.func
 };
 */
 

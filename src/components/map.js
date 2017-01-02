@@ -1,4 +1,6 @@
-import mapboxgl from 'mapbox-gl';
+/**
+ * Map component
+ */
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoia2VsdmluYWJyb2t3YSIsImEiOiJkcUF1TWlVIn0.YzBtz0O019DJGk3IpFi72g';
 
@@ -15,6 +17,7 @@ class Map extends React.Component {
       center: [-76.711, 37.27],
       zoom: 15
     });
+    this.map.addControl(new mapboxgl.NavigationControl());
 
     this.map.scrollZoom.disable();
     this.map.doubleClickZoom.disable();
@@ -35,8 +38,11 @@ class Map extends React.Component {
         type: 'circle',
         source: 'buildings',
         paint: {
-            'circle-radius': 8,
-            'circle-color': '#fd7f7f'
+            'circle-radius': 10,
+            'circle-color': {
+              property: 'color',
+              type: 'identity'
+            }
         },
       });
 
@@ -89,8 +95,15 @@ function props2geoj(p) {
 
   for (let i = 0; i < p.courses.size; i++) {
     let c = p.courses.get(i);
+
     for (let j = 0; j < c.get('sections').size; j++) {
-      let building = p.data.getIn([p.semester, c.get('dept'), c.get('level'), c.getIn(['sections', j]), 'building']);
+      let building = p.data.getIn([
+        p.semester,
+        c.get('dept'),
+        c.get('level'),
+        c.getIn(['sections', j, 'number']),
+        'building'
+      ]);
 
       if (!building) {
         // this section is still being geocoded by the worker
@@ -101,14 +114,15 @@ function props2geoj(p) {
       if (!(building in buildings)) {
         buildings[building] = {
           sections: [],
-          coords: p.buildings.getIn([building, 'coords'])
+          coords: p.buildings.getIn([building, 'coords']),
+          color: c.getIn(['sections', j, 'color'])
         };
       }
 
       buildings[building].sections.push({
         dept: c.get('dept'),
         level: c.get('level'),
-        section: c.getIn(['sections', j])
+        section: c.getIn(['sections', j, 'number'])
       });
     }
   }
@@ -124,7 +138,8 @@ function props2geoj(p) {
         },
         properties: {
           building: b,
-          sections: buildings[b].sections
+          sections: buildings[b].sections,
+          color: buildings[b].color
         }
       }))
   };

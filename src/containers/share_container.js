@@ -6,7 +6,7 @@ const mapStateToProps = state => {
     .map(course => [
       course.get('dept'),
       course.get('level'),
-      course.get('sections')
+      course.get('sections').map(section => section.get('number'))
     ]);
 
   const semester = state.get('semester');

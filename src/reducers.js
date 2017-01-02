@@ -5,7 +5,6 @@ import {
   EDIT_MAP,
   ADD_COURSE,
   REMOVE_COURSE,
-  REMOVE_SECTION,
   TOGGLE_SECTION,
   SELECT_SEMESTER
 } from './actions';
@@ -20,6 +19,7 @@ function schedApp(state, action) {
           course.get('dept') === action.dept && course.get('level') === action.level)) {
         return state;
       }
+
       return state.updateIn(['courses'], Immutable.List(), list => list
         .push(Immutable.Map({
           dept: action.dept,
@@ -34,17 +34,8 @@ function schedApp(state, action) {
         .filterNot(course =>
           course.get('dept') === action.dept && course.get('level') === action.level)
       );
+
       return state.set('selectedCourse', Immutable.Map());
-
-
-    case REMOVE_SECTION:
-      const courseIdx = state.get('courses')
-        .findIndex(c => c.get('dept') === action.dept && c.get('level') === action.level);
-      let course = state.getIn(['courses', courseIdx]);
-      course = course.updateIn(['sections'], Immutable.List(), list => list
-        .filterNot(section => section === action.section)
-      );
-      return state.setIn(['courses', courseIdx], course);
 
 
     case TOGGLE_SECTION: {
@@ -53,14 +44,26 @@ function schedApp(state, action) {
 
       let course = state.getIn(['courses', courseIdx]);
 
-      if (course.get('sections').find(section => section === action.section)) {
+      if (course.get('sections').find(section => section.get('number') === action.section)) {
         // if its already in there, remove it
-        course = course.updateIn(['sections'], Immutable.List(), list => list
-          .filterNot(section => section === action.section)
+        course = course.update('sections', Immutable.List(), list => list
+          .filterNot(section => {
+            // decrease color count
+            if (section.get('number') === action.section) {
+              state = state.updateIn(['colors', section.get('color')], 0, c => --c);
+              return true;
+            }
+            return false;
+          })
         );
       } else {
         // else, add it
-        course = course.updateIn(['sections'], Immutable.List(), list => list.push(action.section));
+
+        // choose color
+        const color = getColor(state.get('colors'));
+        state = state.updateIn(['colors', color], 1, c => ++c);
+
+        course = course.update('sections', Immutable.List(), list => list.push(Immutable.Map({ number: action.section, color })));
 
         if (!state.getIn([
           'data',
@@ -100,6 +103,7 @@ function schedApp(state, action) {
         level: c[1],
         sections: c[2]
       }))));
+
       return state.set('semester', action.semester);
 
 
@@ -124,3 +128,15 @@ function schedApp(state, action) {
 }
 
 export default schedApp;
+
+/**
+ * colors: <Immutable.Map>
+ * {
+ *    <hex color: string>: <uses: int>
+ * }
+ */
+const getColor = colors => colors.entrySeq().min((a, b) => {
+  if (a[1] < b[1]) return -1;
+  if (a[1] > b[1]) return 1;
+  return 0;
+})[0];

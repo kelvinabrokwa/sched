@@ -9,18 +9,21 @@ const App = () => (<div className='mb4'>
 
   <MapContainer />
 
-  <div className='pad2'>
-    <div className='pad2'>
-      <SemesterSelectContainer />
-    </div>
-
+  <div className='pad2 mt2'>
     <div className='flex'>
-      <div className='mr2 mt2' style={{ overflowX: 'scroll' }}>
+      <div className='mr4' style={{ overflowX: 'scroll' }}>
         <CalendarContainer />
       </div>
       <div className='flex1'>
-        <CourseSelectContainer />
-        <CourseListContainer />
+        <div className='mb2'>
+          <SemesterSelectContainer />
+        </div>
+        <div className='mb2'>
+          <CourseSelectContainer />
+        </div>
+        <div>
+          <CourseListContainer />
+        </div>
       </div>
     </div>
 

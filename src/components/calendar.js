@@ -15,8 +15,8 @@ class Calendar extends React.Component {
     // setup
     this.rectWidth = 90;
     const calWidth = 700;
-    const calHeight = 700;
-    const pad = 25;
+    const calHeight = 650;
+    const pad = 15;
 
     this.svg = d3.select('#calendar').append('svg')
         .attr('width', calWidth)

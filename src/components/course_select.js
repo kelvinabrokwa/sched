@@ -45,7 +45,7 @@ class CourseSelect extends React.Component {
       })).sortBy(l => l.get('level'));
     }
 
-    return (<div className='mb2'>
+    return (<div>
       <div>add course:</div>
 
       <div>

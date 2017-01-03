@@ -24,7 +24,7 @@ div { display: block; }
 .mb1 { margin-bottom: 10px; }
 .mb2 { margin-bottom: 20px; }
 .mb4 { margin-bottom: 30px; }
-.mr2 { margin-right: 20px; }
+.mr4 { margin-right: 40px; }
 .mt0 { margin-top: 0px; }
 .mt2 { margin-top: 20px; }
 .anchor-middle { text-anchor: middle; }
@@ -44,15 +44,23 @@ div { display: block; }
   column-gap: 10px;
   width: 100%;
 }
-@media (min-width: 1260px) {
-  .masonry-container { width: 500px; }
+@media (min-width: 1500px) {
+  .masonry-container { right: 0; }
+  .masonry-ul {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+@media (max-width: 1499px) {
+  .masonry-container { right: 0; }
   .masonry-ul {
     -webkit-column-count: 2;
     -moz-column-count: 2;
     column-count: 2;
   }
 }
-@media (max-width: 1259px) {
+@media (max-width: 1260px) {
   .masonry-container { right: 0; }
   .masonry-ul {
     -webkit-column-count: 1;

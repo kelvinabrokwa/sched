@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/kelvinabrokwa/sched#readme",
   "dependencies": {
+    "@turf/bbox": "^3.7.0",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "url-search-params": "^0.6.1"

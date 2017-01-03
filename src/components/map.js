@@ -1,6 +1,7 @@
 /**
  * Map component
  */
+import bbox from '@turf/bbox';
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoia2VsdmluYWJyb2t3YSIsImEiOiJkcUF1TWlVIn0.YzBtz0O019DJGk3IpFi72g';
 
@@ -28,10 +29,13 @@ class Map extends React.Component {
     });
 
     this.map.on('load', () => {
+      const geoj = props2geoj(this.props);
+
       this.map.addSource('buildings', {
         type: 'geojson',
-        data: props2geoj(this.props)
+        data: geoj
       });
+
 
       this.map.addLayer({
         id: 'buildings',
@@ -45,6 +49,8 @@ class Map extends React.Component {
             }
         },
       });
+
+      this.repositionMap(geoj);
 
       this.map.on('mousemove', e => {
         var features = this.map.queryRenderedFeatures(e.point, { layers: ['buildings'] });
@@ -76,13 +82,35 @@ class Map extends React.Component {
 
   componentWillReceiveProps(props) {
     if (this.map.loaded()) {
-      this.map.getSource('buildings').setData(props2geoj(props));
+      const geoj = props2geoj(props);
+      this.map.getSource('buildings').setData(geoj);
+      this.repositionMap(geoj);
     }
   }
 
+  repositionMap(geoj) {
+    if (geoj.features.length == 1) {
+      this.map.setCenter(geoj.features[0].geometry.coordinates);
+      this.map.setZoom(15);
+    } else if (geoj.features.length > 1) {
+      this.map.fitBounds(bbox(geoj), { padding: 40 });
+    }
+
+  }
+
   render() {
-    return (<div style={{height: '300px'}} className='border-bottom-blue'>
-      <div ref='map' style={{position: 'absolute', width: '100%', height: '300px'}}></div>
+    return (<div style={{ height: '300px' }} className='border-bottom-blue'>
+      <div ref='map' style={{ position: 'absolute', width: '100%', height: '300px' }}>
+        <div
+          className='pad2'
+          style={{
+            position: 'absolute',
+            zIndex: 1,
+            fontSize: '50px',
+            color: 'rgba(0,0,0,0.7)',
+            backgroundColor: 'rgba(255,255,255,0.8)'
+          }}>sched</div>
+      </div>
     </div>);
   }
 

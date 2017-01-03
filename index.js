@@ -59,11 +59,11 @@ const initializeApp = data => {
     data: Immutable.fromJS(data),
     map: Immutable.Map({}),
     colors: Immutable.Map({
-      '#fd7f7f': 0,
       '#adff8c': 0,
       '#ffc379': 0,
       '#71c1fd': 0,
-      '#f7ff78': 0
+      '#f7ff78': 0,
+      '#fd7f7f': 0,
     }),
     semester
   }));

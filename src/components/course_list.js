@@ -1,7 +1,13 @@
 import { toColor } from '../utils';
 import Immutable from 'immutable';
 
-const CourseList = ({ semester, courses, data, onSectionToggle, removeCourse }) => (<div className='masonry-container'>
+const CourseList = ({
+  semester,
+  courses,
+  data,
+  onSectionToggle,
+  removeCourse
+}) => (<div className='masonry-container'>
   <ul className='masonry-ul'>
     {courses.map((course, i) => <li key={i}>
       <div
@@ -32,7 +38,10 @@ const CourseList = ({ semester, courses, data, onSectionToggle, removeCourse }) 
               className={`hover-bg-blue pad1 clickable border-blue`}
               style={{
                 // damn u sketchy...come on dude
-                backgroundColor: course.get('sections').find(s => s.get('number') === section.get('section'), null, Immutable.Map({ color: '#fff' })).get('color')
+                backgroundColor: course
+                  .get('sections')
+                  .find(s => s.get('number') === section.get('section'), null, Immutable.Map({ color: '#fff' }))
+                  .get('color')
               }}
               onClick={onSectionToggle.bind(
                 this,

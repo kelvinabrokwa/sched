@@ -46,7 +46,8 @@ class Map extends React.Component {
             'circle-color': {
               property: 'color',
               type: 'identity'
-            }
+            },
+            'circle-stroke-width': 1
         },
       });
 

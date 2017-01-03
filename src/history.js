@@ -2,7 +2,7 @@
  * This file defines methods that handle persisting data
  * and url encoded schedules
  */
-var URLSearchParams = require('url-search-params');
+import URLSearchParams from 'url-search-params';
 
 
 /**
@@ -66,4 +66,26 @@ export function loadCoursesFromHistory(semester) {
     return schedHistory.schedules[semester];
 
   return [];
+}
+
+export function saveSemesterToHistory(semester, courses) {
+  let history;
+  const historyStr = localStorage.schedHistory;
+  if (historyStr) {
+    try {
+      history = JSON.parse(historyStr);
+    } catch (e) {
+      console.log('Unable to parse localStore history');
+      console.log(historyStr);
+      console.log(e);
+      history = {};
+    }
+  } else {
+    history = { schedules: {} };
+  }
+
+  localStorage.setItem('schedHistory', JSON.stringify({
+    semester,
+    schedules: Object.assign(history.schedules, { [semester]: courses })
+  }));
 }

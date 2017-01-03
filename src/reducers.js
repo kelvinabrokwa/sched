@@ -8,7 +8,10 @@ import {
   TOGGLE_SECTION,
   SELECT_SEMESTER
 } from './actions';
-import { loadCoursesFromHistory } from './history';
+import {
+  loadCoursesFromHistory,
+  saveSemesterToHistory
+} from './history';
 
 function schedApp(state, action) {
   switch (action.type) {
@@ -20,7 +23,7 @@ function schedApp(state, action) {
         return state;
       }
 
-      return state.updateIn(['courses'], Immutable.List(), list => list
+      state = state.updateIn(['courses'], Immutable.List(), list => list
         .push(Immutable.Map({
           dept: action.dept,
           level: action.level,
@@ -28,12 +31,18 @@ function schedApp(state, action) {
         }))
       );
 
+      save(state);
+
+      return state;
+
 
     case REMOVE_COURSE:
       state = state.updateIn(['courses'], Immutable.List(), list => list
         .filterNot(course =>
           course.get('dept') === action.dept && course.get('level') === action.level)
       );
+
+      save(state);
 
       return state.set('selectedCourse', Immutable.Map());
 
@@ -63,7 +72,12 @@ function schedApp(state, action) {
         const color = getColor(state.get('colors'));
         state = state.updateIn(['colors', color], 1, c => ++c);
 
-        course = course.update('sections', Immutable.List(), list => list.push(Immutable.Map({ number: action.section, color })));
+        course = course
+          .update(
+            'sections',
+            Immutable.List(),
+            list => list.push(Immutable.Map({ number: action.section, color }))
+          );
 
         if (!state.getIn([
           'data',
@@ -74,6 +88,7 @@ function schedApp(state, action) {
         ]).has('building')) {
           // if we haven't geocoded this section before,
           // geocode it in the map worker
+          // this is bad separation of concerns for the reducer
           const crn = state.getIn([
             'data',
             state.get('semester'),
@@ -93,25 +108,41 @@ function schedApp(state, action) {
         }
       }
 
-      return state.setIn(['courses', courseIdx], course);
+
+      state = state.setIn(['courses', courseIdx], course);
+
+      save(state);
+
+      return state;
     }
 
 
     case SELECT_SEMESTER:
-      state = state.set('courses', Immutable.fromJS(loadCoursesFromHistory(action.semester).map(c => ({
-        dept: c[0],
-        level: c[1],
-        sections: c[2]
-      }))));
+      // FIXME: bad side effect
+      // the reducer should just be applying actions to state
+      save(state);
 
-      return state.set('semester', action.semester);
+      state = state.set('colors', Immutable.Map({
+        '#fd7f7f': 0,
+        '#adff8c': 0,
+        '#ffc379': 0,
+        '#71c1fd': 0,
+        '#f7ff78': 0
+      }));
+
+      return state
+        .set('semester', action.semester)
+        .set('courses', Immutable.List());
 
 
     case EDIT_MAP:
       let d = action.data;
 
       // set building property of section
-      state = state.setIn(['data', state.get('semester'), d.dept, d.level, d.section, 'building'], d.building);
+      state = state.setIn(
+        ['data', state.get('semester'), d.dept, d.level, d.section, 'building'],
+        d.building
+      );
 
       // set coordinates of building in map data
       if (!state.get('map').has(d.building)) {
@@ -140,3 +171,18 @@ const getColor = colors => colors.entrySeq().min((a, b) => {
   if (a[1] > b[1]) return 1;
   return 0;
 })[0];
+
+/**
+ * save a semester to localStorage
+ */
+function save(state) {
+  saveSemesterToHistory(
+    state.get('semester'),
+    state.get('courses')
+      .map(c => [
+        c.get('dept'),
+        c.get('level'),
+        c.get('sections').map(s => s.get('number')).toArray()
+      ]).toArray()
+  );
+}

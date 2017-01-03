@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import Share from '../components/share';
 
 const mapStateToProps = state => {
+  // TODO: this is done elsewhere, just save it and reuse
   const courses = state.get('courses')
     .map(course => [
       course.get('dept'),
@@ -19,30 +20,6 @@ const mapStateToProps = state => {
       `${window.location.host}${window.location.pathname}?${qs}`;
     window.history.pushState({ path: url }, '', url);
   }
-
-  // save to localStorage
-  let oldHistory;
-  const oldHistoryStr = localStorage.schedHistory;
-  if (oldHistoryStr) {
-    try {
-      oldHistory = JSON.parse(oldHistoryStr);
-    } catch (e) {
-      console.log('Unable to parse localStorage history');
-      console.log(oldHistoryStr);
-      console.log(e);
-      oldHistory = { schedules: {} };
-    }
-  } else {
-    oldHistory = { schedules: {} };
-  }
-
-  localStorage.setItem('schedHistory', JSON.stringify({
-    semester,
-    schedules: Object.assign(
-      oldHistory.schedules,
-      { [semester]: courses }
-    )
-  }));
 
   return {
     queryString: qs
